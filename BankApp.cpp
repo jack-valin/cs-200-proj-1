@@ -8,8 +8,9 @@
 #include "teller.h"
 using namespace std;
 
-bool loginMenu(string*);
+bool loginMenu(string*, string*, int);
 int findUser(string*, int, string);//finds the index of the username and returns it
+bool checkPassword(string*, string, int);
 void printToFile(admin*, int, int);//admin just to test, maybe use user** with a polymorphic approach
 int readFromFile(admin*, int);//same as ^^
 char encrypt(char);//simple Xor encryption, can change later
@@ -21,22 +22,53 @@ int main()
 	string Users[SIZE]; // From your database
 	string Password[SIZE];	// From your database
 
-
+	Users[0] = "admin";
+	Password[0] = "rosebud";
+	loginMenu(Users, Password, 2);//hard coded to test functionality
 
 	return 0;
 }
-bool loginMenu(string* users)
+bool loginMenu(string* users, string* pass, int pop)//pop is the number of people in the system to check against
 {
 	string username, password;
+	int position;
+	bool access = false;
+	int count = 2;
 	
-	cout << "\t\t\tGive it a cool name\n\n"
+	cout << "\t\t\t(YOUR AD HERE)\n\n"
 		 << "\tUsername: ";
 	cin >> username;
-	//findUser(users);
-	cout << "\tPassword: ";
-	cin >> password;
+	position = findUser(users, pop, username);
+	
+	if (position != -1)
+	{
+		cout << "\tPassword: ";
+		cin >> password;
+		do
+		{
+			access = checkPassword(pass, password, position);
+			if (access == true)
+			{
+				cout << "\nAccess Granted\n";
+				count = 5;//to force the exit from the loop
+				system("PAUSE");
+			}
+			else
+			{
+				cout << "Access Denied\n"
+					 << "Attempt " << count << " of 4\n"
+					 << "Re-enter Password: ";
+				cin >> password;
+				count ++;
+			}
+		}while(count <= 4);
+	}
+	else
+	{
+		cout << "Error: Invalid Username";
+	}
 }
-int findUser(string* users, int num, string name)
+int findUser(string* users, int num, string name)//num is the size of the users array
 {
 	for (int i = 0; i < num; i++)
 	{
@@ -46,6 +78,14 @@ int findUser(string* users, int num, string name)
 		}
 	}
 	return-1;
+}
+bool checkPassword(string* passwords, string pass, int pos)//pos is the position the username was at
+{
+	if (passwords[pos] == pass)
+	{
+		return true;
+	}
+	return false;
 }
 //may need to have different printToFile functions for each class type?? Polymorphic approach with User**?
 void printToFile(admin* adm, int pop, int read)//population, read offsets the count so there are not old clietns rewritten to the file

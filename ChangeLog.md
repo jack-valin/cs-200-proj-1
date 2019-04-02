@@ -14,6 +14,10 @@ Thomas:
 	Created the read from file function, again, may need more 
 		but it will just be copy paste if we do
 	Worked on the user class and header files
+	Added the login menu, the credentials are:
+		admin
+		rosebud
+	These are just to test and will  be taked out later
 Sam:
 
 
