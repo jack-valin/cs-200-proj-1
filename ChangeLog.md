@@ -9,6 +9,10 @@ David:
 commited the initail push with header & cpp files along with a password checker
 Jack:
 Thomas:
+	Created the first print to file function, may need more but
+		they will just be copy paste
+	Created the read from file function, again, may need more 
+		but it will just be copy paste if we do
 Sam:
 
 
