@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 [Project]
 FileName=Group_pro1.dev
 Name=Group_pro1
@@ -72,7 +71,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit3]
-FileName=user.h
+FileName=admin.cpp
 CompileCpp=1
 Folder=
 Compile=1
@@ -120,8 +119,8 @@ Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
-
 =======
+
 [Project]
 FileName=Group_pro1.dev
 Name=Group_pro1
@@ -153,7 +152,7 @@ IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
 CompilerSettings=0000000000000000000000000
-UnitCount=7
+UnitCount=8
 
 [VersionInfo]
 Major=1
@@ -194,18 +193,8 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit3]
-FileName=user.h
-CompileCpp=1
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
 [Unit4]
-FileName=admin.cpp
+FileName=user.h
 CompileCpp=1
 Folder=
 Compile=1
@@ -215,16 +204,6 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit5]
-FileName=user.h
-CompileCpp=1
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit6]
 FileName=teller.cpp
 CompileCpp=1
 Folder=
@@ -234,7 +213,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit7]
+[Unit6]
 FileName=teller.h
 CompileCpp=1
 Folder=
@@ -244,4 +223,24 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+[Unit7]
+FileName=Untitled1
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
 >>>>>>> caa263e4c9af113cc11548ba00ba87519dc22274
+
+[Unit8]
+FileName=admin.h
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
