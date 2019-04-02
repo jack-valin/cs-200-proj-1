@@ -13,6 +13,7 @@ Thomas:
 		they will just be copy paste
 	Created the read from file function, again, may need more 
 		but it will just be copy paste if we do
+	Worked on the user class and header files
 Sam:
 
 
