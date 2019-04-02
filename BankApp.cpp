@@ -60,7 +60,8 @@ int main()
 
 	return 0;
 }
-void printToFile(admin* adm, int pop, int read)//population, read offsets the count so there are not old clietns rewritten to the file, fName is file name
+//may need to have different printToFile functions for each class type?? Polymorphic approach with User**?
+void printToFile(admin* adm, int pop, int read)//population, read offsets the count so there are not old clietns rewritten to the file
 {
 	stringstream line;
 	string finalLine;
