@@ -1,9 +1,10 @@
+
 #include <string>
 #include <fstream>
 #include <iostream>
-#include "user.h"
-#include "admin.h"
-#include "teller.h"
+//#include "user.h"
+//#include "admin.h"
+//#include "teller.h"
  
 
 
@@ -42,7 +43,7 @@ int main()
 
 	
 	string usrname, pass;
-	cout << "Username:";
+	cout << "Enter your Login ID:";
 	cin >> usrname;
 
 	int index = GetNameIndex(usrname, i);
@@ -60,3 +61,4 @@ int main()
 
 	return 0;
 }
+
