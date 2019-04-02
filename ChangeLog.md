@@ -5,7 +5,8 @@
 
 
 Sprint 1(Monday, Tuesday):
-David:
+David: 
+commited the initail push with header & cpp files along with a password checker
 Jack:
 Thomas:
 Sam:
