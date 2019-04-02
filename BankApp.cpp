@@ -24,7 +24,7 @@ int main()
 
 	Users[0] = "admin";
 	Password[0] = "rosebud";
-	loginMenu(Users, Password, 2);//hard coded to test functionality
+	loginMenu(Users, Password, 1);//hard coded to test functionality
 
 	return 0;
 }
