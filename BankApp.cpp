@@ -8,9 +8,8 @@
 #include "teller.h"
 using namespace std;
 
-int GetNameIndex(string, int);
-bool PasswordMatch(int, string);
-bool loginMenu();
+bool loginMenu(string*);
+int findUser(string*, int, string);//finds the index of the username and returns it
 void printToFile(admin*, int, int);//admin just to test, maybe use user** with a polymorphic approach
 int readFromFile(admin*, int);//same as ^^
 char encrypt(char);//simple Xor encryption, can change later
@@ -21,51 +20,32 @@ int main()
 	const int SIZE = 100;	// More than required is okay, less is BAD!
 	string Users[SIZE]; // From your database
 	string Password[SIZE];	// From your database
-	/*//Reads the database;
-	ifstream fin("database.txt");
-	int i=0;
 
-	while (!fin.eof())
-	{
-		fin >> Users[i] >> Password[i];
-		i++; 
-	}*/
-	
-	
-	
 
 
 	return 0;
 }
-bool PasswordMatch(int int index, string pass)
+bool loginMenu(string* users)
 {
-	return (pass == Password[index]);
-}
-int GetNameIndex(string query, int size)
-{
-	for (int i=0; i<size; i++) 
-	{
-		if (query == Users[i]) return i; //Returns the index
-	}
-	return -1; //Error code
-}
-bool loginMenu()
-{
-	string usrname, pass;
+	string username, password;
 	
-	cout << "Enter your Login ID:";
-	cin >> usrname;
-	cout << "I: " << i << endl;
-	int index = GetNameIndex(usrname, i);
-
-	cout << "Enter your pass:";
-	cin >> pass;
-
-	if (!PasswordMatch(index, pass))
+	cout << "\t\t\tGive it a cool name\n\n"
+		 << "\tUsername: ";
+	cin >> username;
+	//findUser(users);
+	cout << "\tPassword: ";
+	cin >> password;
+}
+int findUser(string* users, int num, string name)
+{
+	for (int i = 0; i < num; i++)
 	{
-		cout << "Access DENIED";
-		return false;
+		if (users[i] == name)
+		{
+			return i;
+		}
 	}
+	return-1;
 }
 //may need to have different printToFile functions for each class type?? Polymorphic approach with User**?
 void printToFile(admin* adm, int pop, int read)//population, read offsets the count so there are not old clietns rewritten to the file
