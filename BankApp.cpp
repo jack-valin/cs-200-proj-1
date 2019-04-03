@@ -55,9 +55,9 @@ bool loginMenu(string* users, string* pass, int pop)//pop is the number of peopl
 			}
 			else
 			{
-				cout << "Access Denied\n"
-					 << "Attempt " << count << " of 4\n"
-					 << "Re-enter Password: ";
+				cout << "\tAccess Denied\n"
+					 << "\n\tAttempt " << count << " of 4\n"
+					 << "\tRe-enter Password: ";
 				cin >> password;
 				count ++;
 			}
