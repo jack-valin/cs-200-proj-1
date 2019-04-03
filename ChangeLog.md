@@ -5,25 +5,26 @@
 
 
 Sprint 1(Monday, Tuesday):
-David: 
-commited the initail push with header & cpp files along with a password checker
+David:
+committed the initial push with header & cpp files along with a password checker
 Jack:
 Thomas:
 	Created the first print to file function, may need more but
 		they will just be copy paste
-	Created the read from file function, again, may need more 
+	Created the read from file function, again, may need more
 		but it will just be copy paste if we do
 	Worked on the user class and header files
 	Added the login menu, the credentials are:
 		admin
 		rosebud
-	These are just to test and will  be taked out later
+	These are just to test and will be taken out later
 Sam:
 
 
-Sprint 2(Wednessday, Thrusday):
+Sprint 2(Wednesday, Thursday):
 David:
 Jack:
+	Corrected a couple of minor typos
 Thomas:
 Sam:
 

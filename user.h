@@ -18,7 +18,7 @@ class user
 		string getUserID();
 		int getNumID(int);//takes the previous ID issued and increments it
 //utilities
-		virtual int meun() = 0;
+		virtual int menu() = 0;
 		virtual void print() = 0;
 	protected:
 		string first;
