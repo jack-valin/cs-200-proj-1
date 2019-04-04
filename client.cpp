@@ -97,7 +97,7 @@ int client::menu(){
 	int choice = 1;
 	do
 	{
-		if (choice < 1 || choice > 4)
+		if (choice < 1 || choice > 5)
 		{
 			cout << "Error: Invalid choice\nRe-enter: ";
 			cin >> choice;
@@ -111,7 +111,7 @@ int client::menu(){
 		     << "\t5. Save and exit (logout)\n"
 			 << "\tEnter your choice: ";
 		cin >> choice;
-	}while(choice < 1 || choice > 4);
+	}while(choice < 1 || choice > 5);
 
 	return choice;
 }
