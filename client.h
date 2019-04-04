@@ -10,7 +10,7 @@ class client: public user
 		client();
 	//mutators
 		// these may take account objects as arguments?
-		void activateAccount();//
+		void activateAccount();//does not have a parameter because the accountCount can be accessed
 		//void accountDeposit(account, double);
 		//void accountWithdraw(account, double);//maybe do this in the accounts themselves to make it simpler, the call would be something like:
 																													// client.accounts[i].withdrawal(amount)
