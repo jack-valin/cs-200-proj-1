@@ -13,14 +13,14 @@ void client::activateAccount(account acc){
 }
 
 // account to be modified and ammount to change it by are its arguments
-void client::accountDeposit(account acc, double am){
+/*void client::accountDeposit(account acc, double am){
 
-}
+}*/
 
 // account to be modified and ammount to change it by are its arguments
-void client::accountWithdraw(account acc, double am){
+/*void client::accountWithdraw(account acc, double am){
 
-}
+}*/
 
 void client::setBirthDate(string b){ birthDate = b; }
 
@@ -47,17 +47,25 @@ void client::print(){
 
 //I'm assuming that these menu functions should return an integer back to the main function which the main function understands how to interpret? - Jack
 int client::menu(){
-	int choice;
-
-	cout << "Client menu\n"
-	     << "===========\n"
-	     << "1. View active accounts\n"
-	     << "2. Activate Account\n"
-	     << "3. Deposit\n"
-	     << "4. Withdrawal\n"
-	     << "5. Save and exit (logout)\n"
-			 << "Enter your choice: ";
-	cin >> choice;
+	system("CLS");
+	int choice = 1;
+	do
+	{
+		if (choice < 1 || choice > 4)
+		{
+			cout << "Error: Invalid choice\nRe-enter: ";
+			cin >> choice;
+		}
+		cout << "\t\tClient menu\n"
+		     << "\t\t===========\n"
+		     << "\t1. View active accounts\n"
+		     << "\t2. Activate Account\n"
+		     << "\t3. Deposit\n"
+		     << "\t4. Withdrawal\n"
+		     << "\t5. Save and exit (logout)\n"
+			 << "\tEnter your choice: ";
+		cin >> choice;
+	}while(choice < 1 || choice > 4);
 
 	return choice;
 }

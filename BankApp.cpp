@@ -32,6 +32,8 @@ int main()
 	Users[0] = "admin";
 	Password[0] = "rosebud";
 	
+	admin adm;
+	
 	do
 	{
 		system("CLS");
@@ -73,8 +75,8 @@ int startMenu()
 	int choice;
 	cout << "\n\t\t\t(YOUR AD HERE)\n"
 		 << "\t\t\t==============\n\n"
-		 << "\t\t1) Login\n"
-		 << "\t\t2) Quit\n"
+		 << "\t\t1. Login\n"
+		 << "\t\t2. Quit\n"
 		 << "\tEnter choice: ";
 	cin >> choice;
 	return choice;
@@ -95,9 +97,9 @@ bool loginMenu(string* users, string* pass, string &username, string &password, 
 	{
 		cout << "\tPassword: ";
 		cin >> password;
+		access = checkPassword(pass, password, position);
 		do
 		{
-			access = checkPassword(pass, password, position);
 			if (access == true)
 			{
 				cout << "\nAccess Granted\n";
@@ -111,7 +113,13 @@ bool loginMenu(string* users, string* pass, string &username, string &password, 
 				cin >> password;
 				count ++;
 			}
+			access = checkPassword(pass, password, position);
 		}while(count <= 4);
+		if (access == true)
+		{
+			cout << "\nAccess Granted\n";
+			return true;
+		}
 	}
 	else
 		cout << "\nError: Invalid Username\n";

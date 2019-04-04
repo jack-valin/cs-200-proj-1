@@ -1,5 +1,7 @@
 // User.cpp
 #include <sstream>
+#include <iostream>
+using namespace std;
 #include "user.h"
 user::user()
 {
@@ -20,7 +22,7 @@ void user::setPassword(string p)
 }
 void user::setUserID(int num, string let)//let = letter
 {
-	std::stringstream sstm;
+	stringstream sstm;//was std::
 	sstm << let << num;
 	userID = sstm.str();
 }

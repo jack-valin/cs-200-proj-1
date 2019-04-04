@@ -1,34 +1,43 @@
-
 //admin.cpp
-
 #include "admin.h"
 
 admin::admin(){
 	// setting everything null
+	setName("","");
+	setPassword("");
+	setUserID(0,"");
 	setAdminR("");
-
-
-void admin::setAdminR(string r){
-	rank = r;}
-/* Wasn't sure which way we wanted to tackel these **DEW
-string admin :: createAdminR (){
-	cout << "Enter number coresponding to user level"
-		<< " 1. Senior Admin"
-		<< " 2. Junior Admin"
-		<< " 3. Finacial Admin."endl;
-	cin >> 
-}*/
-
-/*string admin :: createTeller (){
-	cout << "Enter number coresponding to Employee level"
-		<< " 1. Supervisor"
-		<< " 2. Banker"endl;
-	cin	<< 
-
 }
-*/
-void admin:: print(){
+void admin::setAdminR(string r)
+{
+	rank = r;
+}
+void admin::print()
+{
 	cout <<"Admin Info\n"
-		<<"Full Name: "<<first<<" "<<last<<"\n"
-		<<"Rank: "<<rank<<endl;
+		<<"\t"<<first<<" "<<last<<"\n"
+		<<"\tID: " << userID << "\n"
+		<<"\t\tRank: "<<rank<<endl;
+}
+int admin::menu()
+{
+	system("CLS");
+	int choice = 1;
+	do
+	{
+		if (choice < 1 || choice > 4)
+		{
+			cout << "Error: Invalid choice\nRe-enter: ";
+			cin >> choice;
+		}
+		cout << "\t\tAdmin Menu\n"
+			 << "\t\t==========\n"
+			 << "\t1. Create Banker\n"
+			 << "\t2. Edit Banker\n"
+			 << "\t3. View Account\n"//shows a list of all the accounts
+			 << "\t4. Save and Exit (logout)\n"
+			 << "\tEnter Choice: ";
+		cin >> choice;
+	}while(choice < 1 || choice > 4);
+	return choice;
 }

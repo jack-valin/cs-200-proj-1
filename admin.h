@@ -2,11 +2,12 @@
 #include "user.h"
 #ifndef ADMIN_H
 #define ADMIN_H
-class admin : public user{
+class admin: public user{
 	public:
-	Admin();
-	void setAdminR(string);
-	void print();
+		admin();
+		void setAdminR(string);
+		void print();
+		int menu();
 	private:
 		string rank;
 	
