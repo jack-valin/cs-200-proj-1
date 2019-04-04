@@ -44,6 +44,7 @@ int main()
 	cl.setUserID(187119,"c");
 	cl.setBirthDate("11/27/99");
 	cl.activateAccount();
+	cl.accounts[0].deposit(100);
 	cl.print();
 	system("PAUSE");
 	
