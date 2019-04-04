@@ -25,6 +25,11 @@ Sprint 2(Wednesday, Thursday):
 David:
 Jack:
 	Corrected a couple of minor typos
+	Fleshed out the User class a little more
+		Created accessors
+		Filled in constructor
+	Set up more of the Client class
+		Began fleshing out many of its functions, but need to define the account class before much more can be done
 Thomas:
 Sam:
 
