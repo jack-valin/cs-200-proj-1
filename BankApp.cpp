@@ -6,6 +6,7 @@
 #include "user.h"
 #include "admin.h"
 #include "teller.h"
+#include "client.h"
 using namespace std;
 
 int startMenu();
@@ -40,6 +41,10 @@ int main()
 	
 	client cl;
 	cl.setName("Jesse", "Owens");
+	cl.setUserID(187119,"c");
+	cl.setBirthDate("11/27/99");
+	cl.activateAccount();
+	cl.print();
 	system("PAUSE");
 	
 	do

@@ -20,16 +20,16 @@ void client::activateAccount(){
 	char commit;
 	bool exit = false;
 	
-	cout << "Enter the account type (Checking or savings): ";
+	cout << "Enter the account type (Checking or Savings): ";
 	cin >> t;
 	cout << "Enter the account ID: ";
 	cin >> i;
 	cout << "Enter the starting balance: $";
 	cin >> b;
 	cout << "Data entered:\n"
-		 << "Account type: " << t << "\n"
-		 << "Account ID: " << i << "\n"
-		 << "Balamce: $" < <b << "\n"
+		 << "\tAccount type: " << t << "\n"
+		 << "\tAccount ID: " << i << "\n"
+		 << "\tBalamce: $" << b << "\n"
 		 << "Do you wish to commit this data (y/n): ";
 	cin >> commit;
 	
@@ -37,12 +37,12 @@ void client::activateAccount(){
 	{
 		if (commit == 'y' || commit == 'Y')
 		{
-			acccountCount++;
 			accounts[accountCount].setType(t);
 			accounts[accountCount].setAccountID(i);
 			accounts[accountCount].setBalance(b);
 			cout << "Data committed\n" << endl;
 			exit = true;
+			accountCount++;
 		}
 		else if(commit == 'n' || commit == 'N')
 		{
@@ -72,11 +72,11 @@ void client::setBirthDate(string b){ birthDate = b; }
 
 //accessors
 string client::getBirthDate(){ return birthDate; }
-void client::viewAccounts(int accountCount){
+void client::viewAccounts(){
 	cout << "Account information:"<<endl;
 	for (int i=0; i < accountCount; i++){
 		// here we're gonna have to fill in the appropriate account object output methods, maybe like this:
-		cout << "Account Number: " << accounts[i].getAccountID() << "\n"
+		cout << "\tAccount Number: " << accounts[i].getAccountID() << "\n"
 		     << "\tBalance: $" << accounts[i].getBalance() <<"\n"<<endl;
 	}
 }
@@ -85,9 +85,9 @@ void client::viewAccounts(int accountCount){
 void client::print(){
 	//not sure just yet what we want this to print, but this is a suggestion - Jack
 	cout << "Client information:\n"
-	     << "User ID: "<<getUserID()<<"\n"
-	     << "Name: "<<getName()<<"\n";
-	     viewAccounts(accountCount); //The getAccounts accessor should handle formatting of account output
+	     << "\tUser ID: "<<getUserID()<<"\n"
+	     << "\tName: "<<getName()<<"\n";
+	     viewAccounts(); //The getAccounts accessor should handle formatting of account output
 	cout << "END OF CLIENT"<<endl;
 }
 

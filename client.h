@@ -16,7 +16,7 @@ class client: public user
 																													// client.accounts[i].withdrawal(amount)
 		void setBirthDate(string);
 	// accessors
-		void viewAccounts(int); // print accounts associated with this customer, pass the accountCount integer
+		void viewAccounts(); // print accounts associated with this customer, pass the accountCount integer
 		string getBirthDate();
 	// utilities
 		void print();
