@@ -30,7 +30,7 @@ Jack:
 		Filled in constructor
 	Set up more of the Client class
 		Began fleshing out many of its functions, but need to define the account class before much more can be done
-		Fixed setUserID function so it merges int and string properly
+		Fixed setUserID function so it merges int and string properly (used #6 in this answer: https://stackoverflow.com/questions/191757/how-to-concatenate-a-stdstring-and-an-int/900035#900035)
 	Created skeleton for the account class
 	Troubleshooting so my client-class branch compiles and runs
 Thomas:
