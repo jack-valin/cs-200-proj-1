@@ -13,7 +13,7 @@ void user::setPassword(string p)
 {
 	password = p;
 }
-void user::setuserID(string num, string let)//let = letter
-{
-	userID = let + num;
-}
+//void user::setuserID(string num, string let)//let = letter
+//{
+//	userID = let + num;
+//}

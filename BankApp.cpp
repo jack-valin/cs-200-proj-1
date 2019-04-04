@@ -8,7 +8,9 @@
 #include "teller.h"
 using namespace std;
 
-bool loginMenu(string*, string*, int);
+int startMenu();
+bool loginMenu(string*, string*, string&, string&, int);
+char findUserType(string);
 int findUser(string*, int, string);//finds the index of the username and returns it
 bool checkPassword(string*, string, int);
 void printToFile(admin*, int, int);//admin just to test, maybe use user** with a polymorphic approach
@@ -21,21 +23,70 @@ int main()
 	const int SIZE = 100;	// More than required is okay, less is BAD!
 	string Users[SIZE]; // From your database
 	string Password[SIZE];	// From your database
-
+	int startOption;
+	bool access = false;//whether they have access to the system or not
+	char userType;
+	string currentUser;//the username for the current user loged in
+	string currentPassword;//the password for the current user logged in
+	
 	Users[0] = "admin";
 	Password[0] = "rosebud";
-	loginMenu(Users, Password, 1);//hard coded to test functionality
+	
+	do
+	{
+		system("CLS");
+        startOption = startMenu();
+        switch (startOption)
+        {
+			case 1:
+				access = loginMenu(Users, Password, currentUser, currentPassword, 1);//hard coded to test functionality
+				if (access == true)//login credentials were correct
+				{
+					userType = findUserType(currentUser);
+					switch (userType)
+					{
+						case 'a'://admin
+							break;
+						case 't'://teller			//call individual menu functions from classes here
+							break;
+						case 'c'://client
+							break;
+					}
+				}
+				else
+					cout << "Login denied\n" << endl;
+				break;
+			case 2:
+				cout << "\nGoodbye\n" << endl;
+				break;
+			default: 
+				cout << "\nError: Invalid option\n";
+        }
+        system("PAUSE");
+	}while(startOption != 2);
+	
 
 	return 0;
 }
-bool loginMenu(string* users, string* pass, int pop)//pop is the number of people in the system to check against
+int startMenu()
 {
-	string username, password;
+	int choice;
+	cout << "\n\t\t\t(YOUR AD HERE)\n"
+		 << "\t\t\t==============\n\n"
+		 << "\t\t1) Login\n"
+		 << "\t\t2) Quit\n"
+		 << "\tEnter choice: ";
+	cin >> choice;
+	return choice;
+}
+bool loginMenu(string* users, string* pass, string &username, string &password, int pop)//pop is the number of people in the system to check against
+{
 	int position;
 	bool access = false;
 	int count = 2;
 	
-	cout << "\t\t\t(YOUR AD HERE)\n\n"
+	system("CLS");
+	cout << "\n\t\t\tLogin\n\n"
 		 << "\tUsername: ";
 	cin >> username;
 	position = findUser(users, pop, username);
@@ -50,8 +101,7 @@ bool loginMenu(string* users, string* pass, int pop)//pop is the number of peopl
 			if (access == true)
 			{
 				cout << "\nAccess Granted\n";
-				count = 5;//to force the exit from the loop
-				system("PAUSE");
+				return true;
 			}
 			else
 			{
@@ -64,27 +114,26 @@ bool loginMenu(string* users, string* pass, int pop)//pop is the number of peopl
 		}while(count <= 4);
 	}
 	else
-	{
-		cout << "Error: Invalid Username";
-	}
+		cout << "\nError: Invalid Username\n";
+	return false;
+}
+char findUserType(string u)
+{
+	return u[0];
 }
 int findUser(string* users, int num, string name)//num is the size of the users array
 {
 	for (int i = 0; i < num; i++)
 	{
 		if (users[i] == name)
-		{
 			return i;
-		}
 	}
 	return-1;
 }
 bool checkPassword(string* passwords, string pass, int pos)//pos is the position the username was at
 {
 	if (passwords[pos] == pass)
-	{
 		return true;
-	}
 	return false;
 }
 //may need to have different printToFile functions for each class type?? Polymorphic approach with User**?
@@ -98,9 +147,7 @@ void printToFile(admin* adm, int pop, int read)//population, read offsets the co
 	adminData.open("AdminData.txt", ios::app);
 	
 	for(int i = 0; i < read; i++)
-	{
 		adm++;
-	}
 	
 	for (int i = read; i < pop; i++)
 	{
