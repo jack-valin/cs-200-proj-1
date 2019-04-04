@@ -1,5 +1,6 @@
 //client.h
 #include "user.h"
+#include "account.h"
 #ifndef CLIENT_H
 #define CLIENT_H
 class client: public user

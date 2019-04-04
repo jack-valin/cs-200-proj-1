@@ -41,7 +41,7 @@ void client::print(){
 	cout << "Client information:\n"
 	     << "User ID: "<<getUserID()<<"\n"
 	     << "Name: "<<getName()<<"\n";
-	     getAccounts() //The getAccounts accessor should handle formatting of account output
+	     getAccounts(accountCount); //The getAccounts accessor should handle formatting of account output
 	cout << "END OF CLIENT"<<endl;
 }
 
