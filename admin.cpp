@@ -16,7 +16,7 @@ void admin::print()
 {
 	cout <<"Admin Info\n"
 		<<"\t"<<first<<" "<<last<<"\n"
-		<<"\tID: " << userID << "\n"
+		<<"\t\tID: " << userID << "\n"
 		<<"\t\tRank: "<<rank<<endl;
 }
 int admin::menu()

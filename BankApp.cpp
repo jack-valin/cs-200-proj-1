@@ -33,6 +33,14 @@ int main()
 	Password[0] = "rosebud";
 	
 	admin adm;
+	adm.setName("John", "Smith");
+	adm.setUserID(209235, "a");
+	adm.setAdminR("Super");
+	adm.print();
+	
+	client cl;
+	cl.setName("Jesse", "Owens");
+	system("PAUSE");
 	
 	do
 	{

@@ -5,11 +5,57 @@
 //constructor
 client::client(){
 	// this is gonna need work
+	// initialize the accounts somehow?
+	setName("","");
+	setPassword("");
+	setUserID(0,"");
+	accountCount = 0;
 }
 
 //manipulators
-void client::activateAccount(account acc){
-
+void client::activateAccount(){
+	string t;
+	int i;
+	double b;
+	char commit;
+	bool exit = false;
+	
+	cout << "Enter the account type (Checking or savings): ";
+	cin >> t;
+	cout << "Enter the account ID: ";
+	cin >> i;
+	cout << "Enter the starting balance: $";
+	cin >> b;
+	cout << "Data entered:\n"
+		 << "Account type: " << t << "\n"
+		 << "Account ID: " << i << "\n"
+		 << "Balamce: $" < <b << "\n"
+		 << "Do you wish to commit this data (y/n): ";
+	cin >> commit;
+	
+	do
+	{
+		if (commit == 'y' || commit == 'Y')
+		{
+			acccountCount++;
+			accounts[accountCount].setType(t);
+			accounts[accountCount].setAccountID(i);
+			accounts[accountCount].setBalance(b);
+			cout << "Data committed\n" << endl;
+			exit = true;
+		}
+		else if(commit == 'n' || commit == 'N')
+		{
+			cout << "Data not committed\n" << endl;
+			exit  = true;
+		}
+		else
+		{
+			cout << "Invalid entry\nRe-enter: ";
+			cin >> commit;
+		}
+	}while(exit == false);
+	
 }
 
 // account to be modified and ammount to change it by are its arguments
@@ -26,12 +72,12 @@ void client::setBirthDate(string b){ birthDate = b; }
 
 //accessors
 string client::getBirthDate(){ return birthDate; }
-void client::getAccounts(int accountCount){
+void client::viewAccounts(int accountCount){
 	cout << "Account information:"<<endl;
 	for (int i=0; i < accountCount; i++){
 		// here we're gonna have to fill in the appropriate account object output methods, maybe like this:
-		// cout << "Account Number: " << account[i] -> getAccountNum() << "\n"
-		//      << "Balance: " << account[i] -> getBalance() <<endl;
+		cout << "Account Number: " << accounts[i].getAccountID() << "\n"
+		     << "\tBalance: $" << accounts[i].getBalance() <<"\n"<<endl;
 	}
 }
 
@@ -41,7 +87,7 @@ void client::print(){
 	cout << "Client information:\n"
 	     << "User ID: "<<getUserID()<<"\n"
 	     << "Name: "<<getName()<<"\n";
-	     getAccounts(accountCount); //The getAccounts accessor should handle formatting of account output
+	     viewAccounts(accountCount); //The getAccounts accessor should handle formatting of account output
 	cout << "END OF CLIENT"<<endl;
 }
 
