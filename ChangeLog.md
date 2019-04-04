@@ -34,6 +34,8 @@ Jack:
 	Created skeleton for the account class
 	Troubleshooting so my client-class branch compiles and runs
 Thomas:
+	worked on client class and account class files
+	polished the admin and teller classes
 Sam:
 
 Sprint 3(Friday, Saturday, Sunday):
