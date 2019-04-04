@@ -25,6 +25,14 @@ Sprint 2(Wednesday, Thursday):
 David:
 Jack:
 	Corrected a couple of minor typos
+	Fleshed out the User class a little more
+		Created accessors
+		Filled in constructor
+	Set up more of the Client class
+		Began fleshing out many of its functions, but need to define the account class before much more can be done
+		Fixed setUserID function so it merges int and string properly
+	Created skeleton for the account class
+	Troubleshooting so my client-class branch compiles and runs
 Thomas:
 Sam:
 

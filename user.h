@@ -11,10 +11,10 @@ class user
 //mutators
 		void setName(string, string);
 		void setPassword(string);
-		void setuserID(int, string);//takes in the numID and letter for class type
+		void setUserID(int, string);//takes in the numID and letter for class type
 //accessors
 		string getName();
-		string getPassword();
+		string getPassword(); // I assume this will just return a hash of the password rather than the cleartext? Once we get to that point, of course. - Jack
 		string getUserID();
 		int getNumID(int);//takes the previous ID issued and increments it
 //utilities
