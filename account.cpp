@@ -17,7 +17,7 @@ void account::setAccountID(int id){accountID = id;}
 void account::print()
 {
 	cout << accountID <<"\n"
-		 <<"\tBalance: $" << balance << endl;
+		 <<"\tBalance: $" << getBalance() << endl;
 }
 void account::deposit(double amount)
 {	
@@ -26,7 +26,8 @@ void account::deposit(double amount)
 		cout << "Error: Invalid deposit amount" << endl;
 		return;
 	}
-	balance+=amount;	
+		balance+=amount;
+		cout << "Deposit successful\n";
 }
 void account::withdrawal(double amount){
 	if (amount < 0)
@@ -34,6 +35,8 @@ void account::withdrawal(double amount){
 	if (balance < amount)
 	{
 		cout << "Error: Overdraft\n";
+		return;
 	}
-	balance-=amount;
+		balance-=amount;
+		cout << "Withdrawal successful\n";
 }

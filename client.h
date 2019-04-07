@@ -21,6 +21,8 @@ class client: public user
 	// utilities
 		void print();
 		int menu();
+		void clientDeposit();
+		void clientWithdrawal();
 //	public://changed from protected so they can be used in the main app?
 		// using some other data type besides string for birthDate will likely be painful but necessary if we want to do anything more complicated than print it
 		// but in case we need them, I found some references we may want later:

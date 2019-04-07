@@ -34,6 +34,7 @@ int main()
 	Password[0] = "rosebud";
 	
 	admin adm;
+	adm.menu();
 	adm.setName("John", "Smith");
 	adm.setUserID(209235, "a");
 	adm.setAdminR("Super");
@@ -43,9 +44,7 @@ int main()
 	cl.setName("Jesse", "Owens");
 	cl.setUserID(187119,"c");
 	cl.setBirthDate("11/27/99");
-	cl.activateAccount();
-	cl.accounts[0].deposit(100);
-	cl.print();
+	cl.menu();
 	system("PAUSE");
 	
 	do

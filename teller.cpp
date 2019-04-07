@@ -15,15 +15,11 @@ void teller::print()
 }
 int teller::menu()
 {
-	system("CLS");
 	int choice = 1;
+	bool exit = false;
 	do
 	{
-		if (choice < 1 || choice > 4)
-		{
-			cout << "Error: Invalid choice\nRe-enter: ";
-			cin >> choice;
-		}
+		system("CLS");
 		cout << "\t\tAdmin Menu\n"
 			 << "\t1. Create Client\n"
 			 << "\t2. EditClient\n"//should be something like interact with client
@@ -31,6 +27,20 @@ int teller::menu()
 			 << "\t4. Save and Exit (logout)\n"
 			 << "\tEnter Choice: ";
 		cin >> choice;
-	}while(choice < 1 || choice > 4);
-	return choice;
+		switch(choice)
+		{
+			case 1:
+				return 4;//for the main app switch case option
+			case 2:
+				return 5;//for the main app swtich case option
+			case 3:
+				return 3;
+			case 4:
+				cout << "Saving data and logging out" << endl;
+				return 0;
+			default:
+				cout << "Error: Invalid choice\n";
+		}
+		system("PAUSE");
+	}while(exit != true);
 }
