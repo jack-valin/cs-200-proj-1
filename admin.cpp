@@ -12,6 +12,10 @@ void admin::setAdminR(string r)
 {
 	rank = r;
 }
+string admin::getAdminR()
+{
+	return rank;
+}
 void admin::print()
 {
 	cout <<"Admin Info\n"

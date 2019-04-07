@@ -26,9 +26,13 @@ void user::setUserID(int num, string let)//let = letter
 	sstm << let << num;
 	userID = sstm.str();
 }
+void user::setUserID(string complete)
+{
+	userID = complete;
+}
 
 //accessors
-string user::getName(){ return first + last; }
+string user::getName(){ return first + " " + last; }
 string user::getPassword(){ return password; }
 string user::getUserID(){ return userID; }
 int user::getNumID(int num){ return numID; }

@@ -34,18 +34,24 @@ int main()
 	Users[0] = "admin";
 	Password[0] = "rosebud";
 	
-	admin adm;
-	adm.menu();
-	adm.setName("John", "Smith");
-	adm.setUserID(209235, "a");
-	adm.setAdminR("Super");
-	adm.print();
+	admin admins[10];
+	int population = readFromFile(admins, 0);
+	cout << "population :" << population << endl;
+	admins[0].print();
+	/*admins[0].menu();
+	admins[0].setName("John", "Smith");
+	admins[0].setUserID(209235, "a");
+	admins[0].setPassword("password");
+	admins[0].setAdminR("Super");
+	admins[0].print();*/
 	
+	printToFile(admins, 1, 0);
+	/*
 	client cl;
 	cl.setName("Jesse", "Owens");
 	cl.setUserID(187119,"c");
 	cl.setBirthDate("11/27/99");
-	cl.menu();
+	cl.menu();*/
 	system("PAUSE");
 	
 	do
@@ -178,7 +184,7 @@ void printToFile(admin* adm, int pop, int read)//population, read offsets the co
 	ofstream adminData;
 	int num = 0;
 	
-	adminData.open("AdminData.txt", ios::app);
+	adminData.open("AdminData.txt");//was "AdminData.txt", ios::app
 	
 	for(int i = 0; i < read; i++)
 		adm++;
@@ -187,7 +193,7 @@ void printToFile(admin* adm, int pop, int read)//population, read offsets the co
 	{
 		line.str("");
 		finalLine = "";
-		//line << cls->getID() << " " << cls->getFirstName() << " "  << cls->getLastName() << " " << cls->getBalance() << endl; //fix with the get functions from admin
+		line << adm->getUserID() << " " << adm->getPassword() << " " << adm->getName() << " " << adm->getAdminR() << endl; //fix with the get functions from admin
 		finalLine= line.str();//turns the stringstream into a string, saves it to finalLine
 		for(int e = 0; e < finalLine.length(); e++)
 		{
@@ -204,7 +210,7 @@ void printToFile(admin* adm, int pop, int read)//population, read offsets the co
 	cout << "It is the same directory that this program is stored in" << endl;
 	cout << endl;
 }
-int readFromFile(admin* cls, int pop)//pop = population (amount of admins in the array)
+int readFromFile(admin* adm, int pop)//pop = population (amount of admins in the array)
 {
 	ifstream adminDataIn("AdminData.txt");
 	char choice;
@@ -212,9 +218,7 @@ int readFromFile(admin* cls, int pop)//pop = population (amount of admins in the
 	bool exist = false;
 	stringstream line;
 	
-	//string last, first;
-	//double amount;
-	//int idGiven; //need to change for our local variables ^^^
+	string last, first, password, userID, rank;
 	exist = adminDataIn.good();//test to see if the file exists
 	
 	if(exist == true)
@@ -226,11 +230,12 @@ int readFromFile(admin* cls, int pop)//pop = population (amount of admins in the
 			line << ch;
 			if(ch == '\n')
 			{
-				/*line >> idGiven >> first >> last >> amount;//need to change for our variables
-				cls->setName(first, last);
-				cls->setID(idGiven);
-				cls->changeBalanceBy(amount);
-				cls++;*/
+				line >> userID >> password >> first >> last >> rank;//need to change for our variables
+				adm->setUserID(userID);
+				adm->setPassword(password);
+				adm->setName(first, last);
+				adm->setAdminR(rank);
+				adm++;
 				pop++;
 				line.str("");
 			}	
