@@ -10,49 +10,36 @@
 using namespace std;
 
 int startMenu();
-bool loginMenu(string*, string*, string&, string&, int);
+bool loginMenu(user**, string&, string&, int);
+int addTeller(teller*, int, int, user**, int, int&);//teller pointer, teller max size, teller current size, user pointer, user max size, user current size
 char findUserType(string);
-int findUser(string*, int, string);//finds the index of the username and returns it
-bool checkPassword(string*, string, int);
+int findUser(user**, int, string);//finds the index of the username and returns it
+bool checkPassword(user**, string, int);
 void printToFile(admin*, int, int);//admin just to test, maybe use user** with a polymorphic approach
 int readFromFile(admin*, int);//same as ^^
 char encrypt(char);//simple Xor encryption, can change later
 
 
+
 int main()
 {
-	const int SIZE = 100;	// More than required is okay, less is BAD!
-	string Users[SIZE]; // From your database
-	string Password[SIZE];	// From your database
+	//const int SIZE = 100;	// More than required is okay, less is BAD!
+	//string Users[SIZE]; // From your database
+	//string Password[SIZE];	// From your database
 	int startOption;
 	int choice;//for the different menus
 	bool access = false;//whether they have access to the system or not
-	char userType;
 	string currentUser;//the username for the current user loged in
 	string currentPassword;//the password for the current user logged in
 	
-	Users[0] = "admin";
-	Password[0] = "rosebud";
-	
-	admin admins[10];
-	int population = readFromFile(admins, 0);
-	cout << "population :" << population << endl;
-	admins[0].print();
-	/*admins[0].menu();
-	admins[0].setName("John", "Smith");
-	admins[0].setUserID(209235, "a");
-	admins[0].setPassword("password");
-	admins[0].setAdminR("Super");
-	admins[0].print();*/
-	
-	printToFile(admins, 1, 0);
-	/*
-	client cl;
-	cl.setName("Jesse", "Owens");
-	cl.setUserID(187119,"c");
-	cl.setBirthDate("11/27/99");
-	cl.menu();*/
-	system("PAUSE");
+	admin admins[10];//an aray of 10 admins
+	teller tellers[10];//an array of 10 tellers
+	client clients[50];//an array of 50 clients
+	user* users[70];
+
+
+	int userCount = 0;
+	addTeller(tellers, 10, 0, users, 70, userCount);
 	
 	do
 	{
@@ -61,7 +48,7 @@ int main()
         switch (startOption)
         {
 			case 1:
-				access = loginMenu(Users, Password, currentUser, currentPassword, 1);//hard coded to test functionality
+				access = loginMenu(users, currentUser, currentPassword, userCount);//hard coded to test functionality
 				if (access == true)//login credentials were correct
 				{
 					//call menu functions with polymorphic approach
@@ -86,6 +73,7 @@ int main()
 					These corrospond the the return values from each different menu class
 					
 					*/
+					
 				}
 				else
 					cout << "Login denied\n" << endl;
@@ -113,23 +101,23 @@ int startMenu()
 	cin >> choice;
 	return choice;
 }
-bool loginMenu(string* users, string* pass, string &username, string &password, int pop)//pop is the number of people in the system to check against
+bool loginMenu(user** userPTR, string &username, string &password, int pop)//pop is the number of people in the system to check against
 {
 	int position;
 	bool access = false;
-	int count = 2;
+	int count = 2;//for password attempts
 	
 	system("CLS");
 	cout << "\n\t\t\tLogin\n\n"
 		 << "\tUsername: ";
 	cin >> username;
-	position = findUser(users, pop, username);
+	position = findUser(userPTR, pop, username);
 	
 	if (position != -1)
 	{
 		cout << "\tPassword: ";
 		cin >> password;
-		access = checkPassword(pass, password, position);
+		access = checkPassword(userPTR, password, position);
 		do
 		{
 			if (access == true)
@@ -145,7 +133,7 @@ bool loginMenu(string* users, string* pass, string &username, string &password, 
 				cin >> password;
 				count ++;
 			}
-			access = checkPassword(pass, password, position);
+			access = checkPassword(userPTR, password, position);
 		}while(count <= 4);
 		if (access == true)
 		{
@@ -157,22 +145,76 @@ bool loginMenu(string* users, string* pass, string &username, string &password, 
 		cout << "\nError: Invalid Username\n";
 	return false;
 }
+int addTeller(teller* tPTR, int telMax, int telSize, user** uPTR, int userMax, int &userSize)//return the new size of teller
+{
+	string first, last, password;
+	int numID;
+	char option;//for the commit y/n
+	int exit = -1;
+	
+	if (telSize >= telMax)
+		cout << "Error: tellers maxed out\n";
+	else if(userSize >= userMax)
+		cout << "Error: Users maxed out\n";
+	else
+	{
+		for (int i = 0; i < telSize; i++){
+			tPTR++;
+		}
+		cout <<"Enter full name: ";
+		cin >>first>>last;
+		cout <<"Enter the numerical id: ";
+		cin >> numID;
+		cout <<"Enter the password: ";
+		cin >> password;
+		cout << "\nData Entered:\n\t" << first << " " << last << "\n\t\tID: t" << numID << "\n\t\tPassword: "
+			 << password;
+		cout << "\nWould you like to commit this data (y / n): ";
+		cin >> option;
+		do
+		{
+			if (option == 'y')
+			{
+				tPTR->setName(first, last);
+				tPTR->setUserID(numID, "t");
+				tPTR->setPassword(password);
+				cout << "Data committed\n" << endl;
+				telSize++;
+				uPTR[userSize] = tPTR;
+				userSize++;
+				exit = 0;
+			}
+			else if (option == 'n')
+			{
+				cout << "Data not committed\n" << endl;
+				exit = 0;
+			}
+			else
+			{
+				cout << "Error: Invalid option, re-enter: ";
+				cin >> option;
+			}
+		}while (exit != 0);
+	}
+	return telSize;
+}
 char findUserType(string u)
 {
 	return u[0];
 }
-int findUser(string* users, int num, string name)//num is the size of the users array
+int findUser(user** userPTR, int num, string name)//num is the size of the users array
 {
 	for (int i = 0; i < num; i++)
 	{
-		if (users[i] == name)
+		if ((*userPTR)->getUserID() == name)
 			return i;
+		userPTR++;
 	}
 	return-1;
 }
-bool checkPassword(string* passwords, string pass, int pos)//pos is the position the username was at
+bool checkPassword(user** userPTR, string pass, int pos)//pos is the position the username was at
 {
-	if (passwords[pos] == pass)
+	if ((*userPTR[pos]).getPassword() == pass)
 		return true;
 	return false;
 }
