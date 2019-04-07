@@ -42,4 +42,12 @@ Sprint 3(Friday, Saturday, Sunday):
 David:
 Jack:
 Thomas:
+	worked on the different menus as well as the functions for
+		each menu
+	outlined the switch case in the main app
+	Got the file read and write functional and tested but
+		it is left out for now becuase there is no need
+		to have it yet
+	Reworked the login process so the user logges in with the
+		credentials they made in the addTeller() call
 Sam:
