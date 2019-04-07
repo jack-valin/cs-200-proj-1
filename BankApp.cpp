@@ -25,6 +25,7 @@ int main()
 	string Users[SIZE]; // From your database
 	string Password[SIZE];	// From your database
 	int startOption;
+	int choice;//for the different menus
 	bool access = false;//whether they have access to the system or not
 	char userType;
 	string currentUser;//the username for the current user loged in
@@ -57,16 +58,28 @@ int main()
 				access = loginMenu(Users, Password, currentUser, currentPassword, 1);//hard coded to test functionality
 				if (access == true)//login credentials were correct
 				{
-					userType = findUserType(currentUser);
-					switch (userType)
-					{
-						case 'a'://admin
-							break;
-						case 't'://teller			//call individual menu functions from classes here
-							break;
-						case 'c'://client
-							break;
-					}
+					//call menu functions with polymorphic approach
+					/*
+					
+					have a switch case for the return values that are returned from the different menus
+					The options in the different menus that have reutrn values need to be done in main
+					The others can be handled in the .cpp files for each class
+					swith case:
+						case 0:
+							save and quit
+						case 1:
+							create banker (teller)
+						case 2:
+							edit banker (teller)
+						case 3:
+							view all accounts (autid access)
+						case 4:
+							create client
+						case 5:
+							edit client
+					These corrospond the the return values from each different menu class
+					
+					*/
 				}
 				else
 					cout << "Login denied\n" << endl;
