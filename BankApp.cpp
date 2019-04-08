@@ -10,7 +10,7 @@
 using namespace std;
 
 int startMenu();
-bool loginMenu(user**, string&, string&, int);
+bool loginMenu(user**, int&, int);
 int addTeller(teller*, int, int, user**, int, int&);//teller pointer, teller max size, teller current size, user pointer, user max size, user current size
 char findUserType(string);
 int findUser(user**, int, string);//finds the index of the username and returns it
@@ -23,23 +23,22 @@ char encrypt(char);//simple Xor encryption, can change later
 
 int main()
 {
-	//const int SIZE = 100;	// More than required is okay, less is BAD!
-	//string Users[SIZE]; // From your database
-	//string Password[SIZE];	// From your database
 	int startOption;
 	int choice;//for the different menus
 	bool access = false;//whether they have access to the system or not
-	string currentUser;//the username for the current user loged in
-	string currentPassword;//the password for the current user logged in
+	int currentUserIndex;//popsiton of the user logged in in the user array
 	
 	admin admins[10];//an aray of 10 admins
 	teller tellers[10];//an array of 10 tellers
 	client clients[50];//an array of 50 clients
 	user* users[70];
 
-
+	//add an if that tests if there are users in the file, if not, force the creation of an admin when it starts
+	
 	int userCount = 0;
-	addTeller(tellers, 10, 0, users, 70, userCount);
+	int telCount = 0;
+	telCount = addTeller(tellers, 10, telCount, users, 70, userCount);
+	telCount = addTeller(tellers, 10, telCount, users, 70, userCount);
 	
 	do
 	{
@@ -48,9 +47,10 @@ int main()
         switch (startOption)
         {
 			case 1:
-				access = loginMenu(users, currentUser, currentPassword, userCount);//hard coded to test functionality
+				access = loginMenu(users, currentUserIndex, userCount);//hard coded to test functionality
 				if (access == true)//login credentials were correct
 				{
+					cout << "Index: " << currentUserIndex <<endl;
 					//call menu functions with polymorphic approach
 					/*
 					
@@ -101,9 +101,10 @@ int startMenu()
 	cin >> choice;
 	return choice;
 }
-bool loginMenu(user** userPTR, string &username, string &password, int pop)//pop is the number of people in the system to check against
+bool loginMenu(user** userPTR, int &index, int pop)//pop is the number of people in the system to check against
 {
 	int position;
+	string username, password;
 	bool access = false;
 	int count = 2;//for password attempts
 	
@@ -123,6 +124,7 @@ bool loginMenu(user** userPTR, string &username, string &password, int pop)//pop
 			if (access == true)
 			{
 				cout << "\nAccess Granted\n";
+				index = position;
 				return true;
 			}
 			else
@@ -138,6 +140,7 @@ bool loginMenu(user** userPTR, string &username, string &password, int pop)//pop
 		if (access == true)
 		{
 			cout << "\nAccess Granted\n";
+			index = position;
 			return true;
 		}
 	}
