@@ -50,4 +50,7 @@ Thomas:
 		to have it yet
 	Reworked the login process so the user logges in with the
 		credentials they made in the addTeller() call
+	Added the addClient/addAdmin functions
+	Changed the way the current user is tracked and what they are
+		changed it to an index value rather than two strings
 Sam:
