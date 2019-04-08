@@ -20,7 +20,8 @@ int teller::menu()
 	do
 	{
 		system("CLS");
-		cout << "\t\tAdmin Menu\n"
+		cout << "\t\t Teller Menu\n"
+			 << "\t\t ===========\n"
 			 << "\t1. Create Client\n"
 			 << "\t2. EditClient\n"//should be something like interact with client
 			 << "\t3. View Client\n"//shows a list of all the accounts

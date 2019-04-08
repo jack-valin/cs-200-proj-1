@@ -11,11 +11,11 @@ using namespace std;
 
 int startMenu();
 bool loginMenu(user**, int&, int);
-int addTeller(teller*, int, int, user**, int, int&);//teller pointer, teller max size, teller current size, user pointer, user max size, user current size
-int addAdmin(admin*, int, int, user**, int, int&);//same as the teller
-char findUserType(string);
 int findUser(user**, int, string);//finds the index of the username and returns it
 bool checkPassword(user**, string, int);
+int addTeller(teller*, int, int, user**, int, int&);//teller pointer, teller max size, teller current size, user pointer, user max size, user current size
+int addAdmin(admin*, int, int, user**, int, int&);//same as the teller
+int addClient(client*, int, int, user**, int, int&);//same as the other two
 void printToFile(admin*, int, int);//admin just to test, maybe use user** with a polymorphic approach
 int readFromFile(admin*, int);//same as ^^
 char encrypt(char);//simple Xor encryption, can change later
@@ -28,19 +28,26 @@ int main()
 	int choice;//for the different menus
 	bool access = false;//whether they have access to the system or not
 	int currentUserIndex;//popsiton of the user logged in in the user array
+	
 	int userCount = 0;
 	int telCount = 0;
 	int admCount = 0;
+	int clCount = 0;
 	
-	admin admins[10];//an aray of 10 admins
-	teller tellers[10];//an array of 10 tellers
-	client clients[50];//an array of 50 clients
-	user* users[70];
+	int admMax = 10;
+	int telMax = 10;
+	int clMax = 50;
+	int usrMax = 70;
+	
+	admin admins[admMax];//an aray of 10 admins
+	teller tellers[telMax];//an array of 10 tellers
+	client clients[clMax];//an array of 50 clients
+	user* users[usrMax];
 
 	//add an if that tests if there are users in the file, if not, force the creation of an admin when it starts
 	
 	
-	admCount = addAdmin(admins, 10, admCount, users, 70, userCount);
+	admCount = addAdmin(admins, admMax, admCount, users, usrMax, userCount);
 	
 	do
 	{
@@ -68,7 +75,7 @@ int main()
 								//save data to files 
 								break;
 							case 1:
-								//create banker (teller)
+								telCount = addTeller(tellers, telMax, telCount, users, usrMax, userCount);
 								break;
 							case 2:
 								//edit banker (teller)
@@ -77,7 +84,7 @@ int main()
 								//view all accounts (audit access)
 								break;
 							case 4:
-								//create client
+								clCount = addClient(clients, clMax, clCount, users, usrMax, userCount);
 								break;
 							case 5:
 								//edit client
@@ -162,6 +169,22 @@ bool loginMenu(user** userPTR, int &index, int pop)//pop is the number of people
 	}
 	else
 		cout << "\nError: Invalid Username\n";
+	return false;
+}
+int findUser(user** userPTR, int num, string name)//num is the size of the users array
+{
+	for (int i = 0; i < num; i++)
+	{
+		if ((*userPTR)->getUserID() == name)
+			return i;
+		userPTR++;
+	}
+	return-1;
+}
+bool checkPassword(user** userPTR, string pass, int pos)//pos is the position the username was at
+{
+	if ((*userPTR[pos]).getPassword() == pass)
+		return true;
 	return false;
 }
 int addTeller(teller* tPTR, int telMax, int telSize, user** uPTR, int userMax, int &userSize)//return the new size of teller
@@ -273,26 +296,63 @@ int addAdmin(admin* aPTR, int admMax, int admSize, user** uPTR, int userMax, int
 	}
 	return admSize;
 }
-char findUserType(string u)
+int addClient(client* cPTR, int clMax, int clSize, user** uPTR, int userMax, int &userSize)//return the new size of teller
 {
-	return u[0];
-}
-int findUser(user** userPTR, int num, string name)//num is the size of the users array
-{
-	for (int i = 0; i < num; i++)
+	string first, last, password, birthday;
+	int numID;
+	char option;//for the commit y/n
+	int exit = -1;
+	
+	if (clSize >= clMax)
+		cout << "Error: clients maxed out\n";
+	else if(userSize >= userMax)
+		cout << "Error: Users maxed out\n";
+	else
 	{
-		if ((*userPTR)->getUserID() == name)
-			return i;
-		userPTR++;
+		for (int i = 0; i < clSize; i++){
+			cPTR++;
+		}
+		cout <<"Enter full name: ";
+		cin >>first>>last;
+		cout <<"Enter the numerical id: ";
+		cin >> numID;
+		cout <<"Enter the password: ";
+		cin >> password;
+		cout <<"Enter birthday (mm/dd/yyyy): ";
+		cin >> birthday;
+		cout << "\nData Entered:\n\t" << first << " " << last << "\n\t\tID: c" << numID << "\n\t\tPassword: "
+			 << password << "\n\t\tDOB: " << birthday;
+		cout << "\nWould you like to commit this data (y / n): ";
+		cin >> option;
+		do
+		{
+			if (option == 'y')
+			{
+				cPTR->setName(first, last);
+				cPTR->setUserID(numID, "c");
+				cPTR->setPassword(password);
+				cPTR->setBirthDate(birthday);
+				cout << "Data committed\n" << endl;
+				clSize++;
+				uPTR[userSize] = cPTR;
+				userSize++;
+				exit = 0;
+			}
+			else if (option == 'n')
+			{
+				cout << "Data not committed\n" << endl;
+				exit = 0;
+			}
+			else
+			{
+				cout << "Error: Invalid option, re-enter: ";
+				cin >> option;
+			}
+		}while (exit != 0);
 	}
-	return-1;
+	return clSize;
 }
-bool checkPassword(user** userPTR, string pass, int pos)//pos is the position the username was at
-{
-	if ((*userPTR[pos]).getPassword() == pass)
-		return true;
-	return false;
-}
+
 //may need to have different printToFile functions for each class type?? Polymorphic approach with User**?
 void printToFile(admin* adm, int pop, int read)//population, read offsets the count so there are not old clietns rewritten to the file
 {
