@@ -12,6 +12,7 @@ using namespace std;
 int startMenu();
 bool loginMenu(user**, int&, int);
 int addTeller(teller*, int, int, user**, int, int&);//teller pointer, teller max size, teller current size, user pointer, user max size, user current size
+int addAdmin(admin*, int, int, user**, int, int&);//same as the teller
 char findUserType(string);
 int findUser(user**, int, string);//finds the index of the username and returns it
 bool checkPassword(user**, string, int);
@@ -27,6 +28,9 @@ int main()
 	int choice;//for the different menus
 	bool access = false;//whether they have access to the system or not
 	int currentUserIndex;//popsiton of the user logged in in the user array
+	int userCount = 0;
+	int telCount = 0;
+	int admCount = 0;
 	
 	admin admins[10];//an aray of 10 admins
 	teller tellers[10];//an array of 10 tellers
@@ -35,10 +39,8 @@ int main()
 
 	//add an if that tests if there are users in the file, if not, force the creation of an admin when it starts
 	
-	int userCount = 0;
-	int telCount = 0;
-	telCount = addTeller(tellers, 10, telCount, users, 70, userCount);
-	telCount = addTeller(tellers, 10, telCount, users, 70, userCount);
+	
+	admCount = addAdmin(admins, 10, admCount, users, 70, userCount);
 	
 	do
 	{
@@ -50,29 +52,41 @@ int main()
 				access = loginMenu(users, currentUserIndex, userCount);//hard coded to test functionality
 				if (access == true)//login credentials were correct
 				{
-					cout << "Index: " << currentUserIndex <<endl;
-					//call menu functions with polymorphic approach
 					/*
-					
 					have a switch case for the return values that are returned from the different menus
 					The options in the different menus that have reutrn values need to be done in main
 					The others can be handled in the .cpp files for each class
-					swith case:
-						case 0:
-							save and quit
-						case 1:
-							create banker (teller)
-						case 2:
-							edit banker (teller)
-						case 3:
-							view all accounts (autid access)
-						case 4:
-							create client
-						case 5:
-							edit client
+
 					These corrospond the the return values from each different menu class
-					
 					*/
+					do
+					{
+						choice = users[currentUserIndex]->menu();
+						switch (choice)
+						{
+							case 0:
+								//save data to files 
+								break;
+							case 1:
+								//create banker (teller)
+								break;
+							case 2:
+								//edit banker (teller)
+								break;
+							case 3:
+								//view all accounts (audit access)
+								break;
+							case 4:
+								//create client
+								break;
+							case 5:
+								//edit client
+								break;
+							default:
+								cout << "\nError: Invalid option\n";
+						}
+						system("PAUSE");
+					}while(choice != 0);
 					
 				}
 				else
@@ -124,6 +138,7 @@ bool loginMenu(user** userPTR, int &index, int pop)//pop is the number of people
 			if (access == true)
 			{
 				cout << "\nAccess Granted\n";
+				system("PAUSE");
 				index = position;
 				return true;
 			}
@@ -140,6 +155,7 @@ bool loginMenu(user** userPTR, int &index, int pop)//pop is the number of people
 		if (access == true)
 		{
 			cout << "\nAccess Granted\n";
+			system("PAUSE");
 			index = position;
 			return true;
 		}
@@ -200,6 +216,62 @@ int addTeller(teller* tPTR, int telMax, int telSize, user** uPTR, int userMax, i
 		}while (exit != 0);
 	}
 	return telSize;
+}
+int addAdmin(admin* aPTR, int admMax, int admSize, user** uPTR, int userMax, int &userSize)//return the new size of teller
+{
+	string first, last, password, rank;
+	int numID;
+	char option;//for the commit y/n
+	int exit = -1;
+	
+	if (admSize >= admMax)
+		cout << "Error: admins maxed out\n";
+	else if(userSize >= userMax)
+		cout << "Error: Users maxed out\n";
+	else
+	{
+		for (int i = 0; i < admSize; i++){
+			aPTR++;
+		}
+		cout <<"Enter full name: ";
+		cin >>first>>last;
+		cout <<"Enter the numerical id: ";
+		cin >> numID;
+		cout <<"Enter the password: ";
+		cin >> password;
+		cout <<"Enter the admin rank: ";
+		cin >> rank;
+		cout << "\nData Entered:\n\t" << first << " " << last << "\n\t\tRank: " << rank << "\n\t\tID: a" << numID << "\n\t\tPassword: "
+			 << password;
+		cout << "\nWould you like to commit this data (y / n): ";
+		cin >> option;
+		do
+		{
+			if (option == 'y')
+			{
+				aPTR->setName(first, last);
+				aPTR->setUserID(numID, "a");
+				aPTR->setPassword(password);
+				aPTR->setAdminR(rank);
+				cout << "Data committed\n" << endl;
+				admSize++;
+				uPTR[userSize] = aPTR;
+				userSize++;
+				exit = 0;
+			}
+			else if (option == 'n')
+			{
+				cout << "Data not committed\n" << endl;
+				exit = 0;
+			}
+			else
+			{
+				cout << "Error: Invalid option, re-enter: ";
+				cin >> option;
+			}
+		}while (exit != 0);
+	}
+	return admSize;
 }
 char findUserType(string u)
 {
