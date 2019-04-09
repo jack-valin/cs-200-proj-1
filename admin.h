@@ -7,6 +7,7 @@ class admin: public user{
 		admin();
 		void setAdminR(string);
 		string getAdminR();
+		string formatSave();
 		void print();
 		int menu();
 	private:

@@ -19,6 +19,8 @@ class client: public user
 		void viewAccounts(); // print accounts associated with this customer, pass the accountCount integer
 		string getBirthDate();
 	// utilities
+		string formatAccount();//to format the accounts to be called in formatSave()
+		string formatString();
 		void print();
 		int menu();
 		void clientDeposit();

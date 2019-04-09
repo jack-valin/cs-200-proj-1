@@ -72,7 +72,7 @@ int main()
 						switch (choice)
 						{
 							case 0:
-								//save data to files 
+								//save data to files
 								break;
 							case 1:
 								telCount = addTeller(tellers, telMax, telCount, users, usrMax, userCount);

@@ -1,5 +1,6 @@
 //user.h
 #include <iostream>
+#include <sstream>
 using namespace std;
 #ifndef USER_H
 #define USER_H
@@ -19,6 +20,7 @@ class user
 		string getUserID();
 		int getNumID(int);//takes the previous ID issued and increments it
 //utilities
+		virtual string formatSave() = 0;
 		virtual int menu() = 0;
 		virtual void print() = 0;
 	protected:

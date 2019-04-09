@@ -6,6 +6,7 @@ class teller: public user
 {
 	public:
 		teller();
+		string formatSave();
 		void print();
 		int menu();
 	private:

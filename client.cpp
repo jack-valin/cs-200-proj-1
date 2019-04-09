@@ -76,7 +76,30 @@ void client::viewAccounts(){
 		     << "\tBalance: $" << accounts[i].getBalance() <<"\n"<<endl;
 	}
 }
-
+string client::formatAccount()
+{
+	stringstream line;
+	string finalLine;
+	
+	line.str("");
+	finalLine = "";
+	line << endl;
+	finalLine= line.str();//turns the stringstream into a string, saves it to finalLine
+	
+	return finalLine;
+}
+string client::formatSave()
+{
+	stringstream line;
+	string finalLine;
+	
+	line.str("");
+	finalLine = "";
+	line << getUserID() << " " << getPassword() << " " << getName() << " " << getBirthDate() << accountCount << endl; //fix with the get functions from admin
+	finalLine= line.str();//turns the stringstream into a string, saves it to finalLine
+	
+	return finalLine;
+}
 //utilities
 void client::print(){
 	//not sure just yet what we want this to print, but this is a suggestion - Jack
@@ -118,6 +141,7 @@ int client::menu(){
 				clientWithdrawal();
 				break;
 			case 5:
+				cout << "Saving data and logging out" << endl;
 				return 0;
 			default:
 				cout << "Error: Invalid choice\n";
