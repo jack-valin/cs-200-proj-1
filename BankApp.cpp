@@ -355,7 +355,7 @@ int addClient(client* cPTR, int clMax, int clSize, user** uPTR, int userMax, int
 
 //may need to have different printToFile functions for each class type?? Polymorphic approach with User**?
 void printToFile(admin* adm, int pop, int read)//population, read offsets the count so there are not old clietns rewritten to the file
-{
+{														//may not need the read variable if we are rewriting the entire file
 	stringstream line;
 	string finalLine;
 	ofstream adminData;
