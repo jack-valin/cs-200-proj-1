@@ -366,72 +366,81 @@ int addClient(client* cPTR, int clMax, int clSize, user** uPTR, int userMax, int
 }
 
 //may need to have different printToFile functions for each class type?? Polymorphic approach with User**?
-void printToFile(admin* adm, int pop, int read)//population, read offsets the count so there are not old clients rewritten to the file
+// Prototype adjustment for the polymorphic approach. REQUIRES TESTING
+void printToFile(user** usr, int pop, int read)//population, read offsets the count so there are not old clients rewritten to the file
 {														//may not need the read variable if we are rewriting the entire file
 	stringstream line;
 	string finalLine;
-	ofstream adminData;
+	ofstream userData;
 	int num = 0;
 
-	adminData.open("AdminData.txt");//was "AdminData.txt", ios::app
+	userData.open("UserData.txt");//was "AdminData.txt", ios::app
 
 	for(int i = 0; i < read; i++)
-		adm++;
+		usr++;
 
 	for (int i = read; i < pop; i++)
 	{
 		line.str("");
 		finalLine = "";
-		line << adm->getUserID() << " " << adm->getPassword() << " " << adm->getName() << " " << adm->getAdminR() << endl; //fix with the get functions from admin
+		line << usr->formatSave() << endl; //fix with the get functions from admin
 		finalLine= line.str();//turns the stringstream into a string, saves it to finalLine
 		for(int e = 0; e < finalLine.length(); e++)
 		{
 			finalLine[e] = encrypt(finalLine[e]);
 		}
-		adminData << finalLine;
+		userData << finalLine;
 		num++;//a count of the number saved to the file
-		adm++;
+		usr++;
 	}
-	adminData.close();
+	userData.close();
 	cout << "\n" << num << " new admin(s) have been saved to the file AdminData.txt\n";
 	cout << "The file can be found in: ";
 	system("CD");
 	cout << "It is the same directory that this program is stored in" << endl;
 	cout << endl;
 }
-int readFromFile(admin* adm, int pop)//pop = population (amount of admins in the array)
+int readFromFile(user** usr, int pop)//pop = population (amount of admins in the array)
 {
-	ifstream adminDataIn("AdminData.txt");
+	ifstream userDataIn("UserData.txt");
 	char choice;
 	char ch;
 	bool exist = false;
 	stringstream line;
 
-	string last, first, password, userID, rank;
-	exist = adminDataIn.good();//test to see if the file exists
+	string dataElements[10];
+	exist = userDataIn.good();//test to see if the file exists
 
 	if(exist == true)
 	{
-		adminDataIn >> ch;
+		// Doesn't this data need to get decrypted char by char? Or can it handle it all at once?
+		userDataIn >> ch;
 		ch = encrypt(ch);
-		while(!adminDataIn.eof())//while it is not at the end of file
+		while(!userDataIn.eof())//while it is not at the end of file
 		{
 			line << ch;
 			if(ch == '\n')
 			{
-				line >> userID >> password >> first >> last >> rank;//need to change for our variables
-				adm->setUserID(userID);
-				adm->setPassword(password);
-				adm->setName(first, last);
-				adm->setAdminR(rank);
-				adm++;
+				// line >> userID >> password >> first >> last >> rank;//need to change for our variables
+				// Not sure we can do this...
+				line >> dataElements;
+				// Can we use an overloaded constructor this way? Just pass it an array of strings?
+				usr->(dataElements)
+				// adm->setUserID(userID);
+				// adm->setPassword(password);
+				// adm->setName(first, last);
+				// adm->setAdminR(rank);
+				usr++;
 				pop++;
 				line.str("");
 			}
-			adminDataIn >> ch;
+			userDataIn >> ch;
 			ch = encrypt(ch);
 		}
-		adminDataIn.close();
+		userDataIn.close();
+	}
+	else{
+		cout << "ERROR: UserData.txt does not exist!" << endl;
 	}
 	system("PAUSE");
 	return pop;
