@@ -28,27 +28,27 @@ int main()
 	int choice;//for the different menus
 	bool access = false;//whether they have access to the system or not
 	int currentUserIndex;//popsiton of the user logged in in the user array
-	
+
 	int userCount = 0;
 	int telCount = 0;
 	int admCount = 0;
 	int clCount = 0;
-	
+
 	int admMax = 10;
 	int telMax = 10;
 	int clMax = 50;
 	int usrMax = 70;
-	
+
 	admin admins[admMax];//an aray of 10 admins
 	teller tellers[telMax];//an array of 10 tellers
 	client clients[clMax];//an array of 50 clients
 	user* users[usrMax];
 
 	//add an if that tests if there are users in the file, if not, force the creation of an admin when it starts
-	
-	
+
+
 	admCount = addAdmin(admins, admMax, admCount, users, usrMax, userCount);
-	
+
 	do
 	{
 		system("CLS");
@@ -94,7 +94,7 @@ int main()
 						}
 						system("PAUSE");
 					}while(choice != 0);
-					
+
 				}
 				else
 					cout << "Login denied\n" << endl;
@@ -102,12 +102,12 @@ int main()
 			case 2:
 				cout << "\nGoodbye\n" << endl;
 				break;
-			default: 
+			default:
 				cout << "\nError: Invalid option\n";
         }
         system("PAUSE");
 	}while(startOption != 2);
-	
+
 
 	return 0;
 }
@@ -140,13 +140,13 @@ bool loginMenu(user** userPTR, int &index, int pop)//pop is the number of people
 	string username, password;
 	bool access = false;
 	int count = 2;//for password attempts
-	
+
 	system("CLS");
 	cout << "\n\t\t\tLogin\n\n"
 		 << "\tUsername: ";
 	cin >> username;
 	position = findUser(userPTR, pop, username);
-	
+
 	if (position != -1)
 	{
 		cout << "\tPassword: ";
@@ -205,7 +205,7 @@ int addTeller(teller* tPTR, int telMax, int telSize, user** uPTR, int userMax, i
 	int numID;
 	char option;//for the commit y/n
 	int exit = -1;
-	
+
 	if (telSize >= telMax)
 		cout << "Error: tellers maxed out\n";
 	else if(userSize >= userMax)
@@ -258,7 +258,7 @@ int addAdmin(admin* aPTR, int admMax, int admSize, user** uPTR, int userMax, int
 	int numID;
 	char option;//for the commit y/n
 	int exit = -1;
-	
+
 	if (admSize >= admMax)
 		cout << "Error: admins maxed out\n";
 	else if(userSize >= userMax)
@@ -314,7 +314,7 @@ int addClient(client* cPTR, int clMax, int clSize, user** uPTR, int userMax, int
 	int numID;
 	char option;//for the commit y/n
 	int exit = -1;
-	
+
 	if (clSize >= clMax)
 		cout << "Error: clients maxed out\n";
 	else if(userSize >= userMax)
@@ -366,18 +366,18 @@ int addClient(client* cPTR, int clMax, int clSize, user** uPTR, int userMax, int
 }
 
 //may need to have different printToFile functions for each class type?? Polymorphic approach with User**?
-void printToFile(admin* adm, int pop, int read)//population, read offsets the count so there are not old clietns rewritten to the file
+void printToFile(admin* adm, int pop, int read)//population, read offsets the count so there are not old clients rewritten to the file
 {														//may not need the read variable if we are rewriting the entire file
 	stringstream line;
 	string finalLine;
 	ofstream adminData;
 	int num = 0;
-	
+
 	adminData.open("AdminData.txt");//was "AdminData.txt", ios::app
-	
+
 	for(int i = 0; i < read; i++)
 		adm++;
-	
+
 	for (int i = read; i < pop; i++)
 	{
 		line.str("");
@@ -406,10 +406,10 @@ int readFromFile(admin* adm, int pop)//pop = population (amount of admins in the
 	char ch;
 	bool exist = false;
 	stringstream line;
-	
+
 	string last, first, password, userID, rank;
 	exist = adminDataIn.good();//test to see if the file exists
-	
+
 	if(exist == true)
 	{
 		adminDataIn >> ch;
@@ -427,7 +427,7 @@ int readFromFile(admin* adm, int pop)//pop = population (amount of admins in the
 				adm++;
 				pop++;
 				line.str("");
-			}	
+			}
 			adminDataIn >> ch;
 			ch = encrypt(ch);
 		}
@@ -439,6 +439,6 @@ int readFromFile(admin* adm, int pop)//pop = population (amount of admins in the
 char encrypt(char ch)
 {
 	char enc = 'q';
-	
+
 	return (ch ^ enc);
 }
