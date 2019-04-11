@@ -11,12 +11,12 @@ string teller::formatSave()
 {
 	stringstream line;
 	string finalLine;
-	
+
 	line.str("");
 	finalLine = "";
-	line << getUserID() << " " << getPassword() << " " << getName() << " " <<  endl; //fix with the get functions from admin
+	line << getUserID() << " " << getPassword() << " " << getName() <<  endl; //fix with the get functions from admin
 	finalLine= line.str();//turns the stringstream into a string, saves it to finalLine
-	
+
 	return finalLine;
 }
 void teller::print()
