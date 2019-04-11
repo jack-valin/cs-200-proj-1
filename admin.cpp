@@ -12,10 +12,12 @@ void admin::setAdminR(string r)
 {
 	rank = r;
 }
+
 string admin::getAdminR()
 {
 	return rank;
 }
+
 string admin::formatSave()
 {
 	stringstream line;
@@ -28,6 +30,7 @@ string admin::formatSave()
 	
 	return finalLine;
 }
+
 void admin::print()
 {
 	cout <<"Admin Info\n"
@@ -35,6 +38,7 @@ void admin::print()
 		<<"\t\tID: " << userID << "\n"
 		<<"\t\tRank: "<<rank<<endl;
 }
+
 int admin::menu()
 {
 	int choice = 1;
