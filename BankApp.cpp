@@ -19,7 +19,7 @@ int addClient(client*, int, int, user**, int, int&);//same as the other two
 void printToFile(admin*, int, int);//admin just to test, maybe use user** with a polymorphic approach
 int readFromFile(admin*, int);//same as ^^
 char encrypt(char);//simple Xor encryption, can change later
-
+void viewUser(user**, int, int);
 
 
 int main()
@@ -81,7 +81,7 @@ int main()
 								//edit banker (teller)
 								break;
 							case 3:
-								//view all accounts (audit access)
+								viewUser(users, currentUserIndex, userCount);
 								break;
 							case 4:
 								clCount = addClient(clients, clMax, clCount, users, usrMax, userCount);
@@ -111,6 +111,17 @@ int main()
 
 	return 0;
 }
+
+void viewUser(user** userPTR, int userIndex, int pop)
+{
+	string name;
+
+	cout << "Enter the UserID you wish to view: ";
+	cin >> name;
+	while ((*userPTR)->getUserID() != name)
+		userPTR++;
+	(*userPTR)->print();
+}
 int startMenu()
 {
 	int choice;
@@ -122,6 +133,7 @@ int startMenu()
 	cin >> choice;
 	return choice;
 }
+
 bool loginMenu(user** userPTR, int &index, int pop)//pop is the number of people in the system to check against
 {
 	int position;

@@ -21,6 +21,7 @@ class client: public user
 	// utilities
 		string formatAccount();//to format the accounts to be called in formatSave()
 		string formatString();
+		string formatSave();
 		void print();
 		int menu();
 		void clientDeposit();
