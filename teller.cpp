@@ -35,9 +35,10 @@ int teller::menu()
 		cout << "\t\t Teller Menu\n"
 			 << "\t\t ===========\n"
 			 << "\t1. Create Client\n"
-			 << "\t2. EditClient\n"//should be something like interact with client
-			 << "\t3. View Client\n"//shows a list of all the accounts
-			 << "\t4. Save and Exit (logout)\n"
+			 << "\t2. Make Transaction\n"
+			 << "\t3. EditClient\n"//should be something like interact with client
+			 << "\t4. View Client\n"//shows a list of all the accounts
+			 << "\t5. Save and Exit (logout)\n"
 			 << "\tEnter Choice: ";
 		cin >> choice;
 		switch(choice)
@@ -45,10 +46,12 @@ int teller::menu()
 			case 1:
 				return 4;//for the main app switch case option
 			case 2:
-				return 5;//for the main app swtich case option
+				return 6;
 			case 3:
-				return 3;
+				return 5;//for the main app swtich case option
 			case 4:
+				return 3;
+			case 5:
 				cout << "Saving data and logging out" << endl;
 				return 0;
 			default:

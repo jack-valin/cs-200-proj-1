@@ -69,11 +69,11 @@ void client::setBirthDate(string b){ birthDate = b; }
 //accessors
 string client::getBirthDate(){ return birthDate; }
 void client::viewAccounts(){
-	cout << "\nAccount information:"<<endl;
+	cout << "\n\tAccount information:"<<endl;
 	for (int i=0; i < accountCount; i++){
 		// here we're gonna have to fill in the appropriate account object output methods, maybe like this:
-		cout << "\tAccount Number: " << accounts[i].getAccountID() << "\n"
-		     << "\tBalance: $" << accounts[i].getBalance() <<"\n"<<endl;
+		cout << "\t\tAccount Number: " << accounts[i].getAccountID() << "\n"
+		     << "\t\tBalance: $" << accounts[i].getBalance() <<"\n"<<endl;
 	}
 }
 string client::formatAccount()

@@ -9,6 +9,7 @@
 #include "client.h"
 using namespace std;
 
+void viewUser(user**, int, int);
 int startMenu();
 bool loginMenu(user**, int&, int);
 int findUser(user**, int, string);//finds the index of the username and returns it
@@ -16,10 +17,10 @@ bool checkPassword(user**, string, int);
 int addTeller(teller*, int, int, user**, int, int&);//teller pointer, teller max size, teller current size, user pointer, user max size, user current size
 int addAdmin(admin*, int, int, user**, int, int&);//same as the teller
 int addClient(client*, int, int, user**, int, int&);//same as the other two
+void tellerTransaction(client*, int);//clients / client size /
 void printToFile(admin*, int, int);//admin just to test, maybe use user** with a polymorphic approach
 int readFromFile(admin*, int);//same as ^^
 char encrypt(char);//simple Xor encryption, can change later
-void viewUser(user**, int, int);
 
 
 int main()
@@ -34,12 +35,12 @@ int main()
 	int admCount = 0;
 	int clCount = 0;
 
-	int admMax = 10;
+	int admMax = 1;
 	int telMax = 10;
 	int clMax = 50;
 	int usrMax = 70;
 
-	admin admins[admMax];//an aray of 10 admins
+	admin admins[admMax];//an aray of 1 admin
 	teller tellers[telMax];//an array of 10 tellers
 	client clients[clMax];//an array of 50 clients
 	user* users[usrMax];
@@ -89,6 +90,9 @@ int main()
 							case 5:
 								//edit client
 								break;
+							case 6:
+								tellerTransaction(clients, clCount);
+								break;
 							default:
 								cout << "\nError: Invalid option\n";
 						}
@@ -115,12 +119,23 @@ int main()
 void viewUser(user** userPTR, int userIndex, int pop)
 {
 	string name;
+	bool found = false;
 
 	cout << "Enter the UserID you wish to view: ";
 	cin >> name;
-	while ((*userPTR)->getUserID() != name)
+	for (int i = 0; i < pop; i++)
+	{
+		if ((*userPTR)->getUserID() == name)
+		{
+			found = true;
+			break;
+		}
 		userPTR++;
-	(*userPTR)->print();
+	}
+	if (found == true)
+		(*userPTR)->print();
+	else
+		cout << "Error: ID not found\n" << endl;
 }
 int startMenu()
 {
@@ -364,7 +379,56 @@ int addClient(client* cPTR, int clMax, int clSize, user** uPTR, int userMax, int
 	}
 	return clSize;
 }
-
+void tellerTransaction(client* cls, int clCount)
+{
+	int targetID;
+	char type;
+	bool done = false;
+	bool found = false;
+	double amount;
+	
+	if (clCount == 0)
+		cout << "Error: no clients entered\n" << endl;
+	else
+	{
+		cout << "Enter the account ID: ";
+		cin >> targetID;
+		for(int i = 0; i < clCount; i++)
+		{
+			for (int j = 0; j < cls[i].accountCount; j++)
+			{
+				if (cls[i].accounts[j].getAccountID() == targetID)
+				{
+					found = true;
+					do
+					{
+						cout << "Enter transaction type (d / w): ";
+						cin >> type;
+						switch(type)
+						{
+							case 'd':
+								cout << "Enter the amount to deposit: ";
+								cin >> amount;
+								cls[i].accounts[j].deposit(amount);
+								done = true;
+								break;
+							case 'w':
+								cout << "Enter the amount to withdrawal: ";
+								cin >> amount;
+								cls[i].accounts[j].withdrawal(amount);
+								done = true;
+								break;
+							default:
+								cout << "Error: invalid choice entered\n" << endl;
+						}
+					}while(done == false);
+				}
+			}
+		}
+		if (found == false)
+			cout << "Error: account not found\n" << endl;
+	}
+}
 //may need to have different printToFile functions for each class type?? Polymorphic approach with User**?
 void printToFile(admin* adm, int pop, int read)//population, read offsets the count so there are not old clients rewritten to the file
 {														//may not need the read variable if we are rewriting the entire file
