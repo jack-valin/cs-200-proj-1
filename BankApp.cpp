@@ -20,6 +20,7 @@ void printToFile(admin*, int, int);//admin just to test, maybe use user** with a
 int readFromFile(admin*, int);//same as ^^
 char encrypt(char);//simple Xor encryption, can change later
 void viewUser(user**, int, int);
+bool checkForUserDataFile(); //see if UserData.txt already exists
 
 
 int main()
@@ -400,18 +401,28 @@ void printToFile(user** usr, int pop, int read)//population, read offsets the co
 	cout << "It is the same directory that this program is stored in" << endl;
 	cout << endl;
 }
-int readFromFile(user** usr, int pop)//pop = population (amount of admins in the array)
+// Arguments to this function have to basically contain everything. It's a mess without vectors
+// Here's the list:
+// usr = pointer to user array
+// popMax = maximum number of users
+// adm = pointer to admin array
+// admMax = maximum number of admins
+// tel = pointer to teller array
+// telMax = maximum number of tellers
+// cli = pointer to client array
+// cliMax = maximum number of client
+int readFromFile(user** usr, int pop, admin* adm, int admMax, teller* tel, client* cli, int cliMax)
 {
 	ifstream userDataIn("UserData.txt");
-	char choice;
+	// char choice;  // do we need this?
 	char ch;
 	bool exist = false;
 	stringstream line;
 
 	string dataElements[10];
-	exist = userDataIn.good();//test to see if the file exists
+	// exist = userDataIn.good();//test to see if the file exists
 
-	if(exist == true)
+	if(checkForUserDataFile())
 	{
 		// Doesn't this data need to get decrypted char by char? Or can it handle it all at once?
 		userDataIn >> ch;
@@ -421,9 +432,17 @@ int readFromFile(user** usr, int pop)//pop = population (amount of admins in the
 			line << ch;
 			if(ch == '\n')
 			{
-				// line >> userID >> password >> first >> last >> rank;//need to change for our variables
-				// Not sure we can do this...
-				line >> dataElements;
+				line >> dataElements[0] >> dataElements[1] >> dataElements[2] >> dataElements[3];
+				string userType = ;
+				switch (userType){
+					case "a":
+						break;
+					case "c":
+						break;
+					case "t":
+						break;
+					default:
+				}
 				// Can we use an overloaded constructor this way? Just pass it an array of strings?
 				usr->(dataElements)
 				// adm->setUserID(userID);
@@ -450,4 +469,15 @@ char encrypt(char ch)
 	char enc = 'q';
 
 	return (ch ^ enc);
+}
+
+// Since we're gonna want to check for this file's existance in main() as well as readFromFile(), I made it a function
+bool checkForUserDataFile(){
+	ifstream userDataIn("UserData.txt");
+	if (userDataIn.good()){
+		return true;
+	}
+	else{
+		return false;
+	}
 }
