@@ -54,3 +54,12 @@ Thomas:
 	Changed the way the current user is tracked and what they are
 		changed it to an index value rather than two strings
 Sam:
+
+Sprint 4(Wednesday,Thursday, week 2):
+David:
+Jack:
+	Added this block to the ChangeLog.md to track work done this week
+	Corrected some minor typo found in BankApp.cpp (357)
+
+Thomas:
+Sam:
