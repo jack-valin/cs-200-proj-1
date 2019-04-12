@@ -9,7 +9,7 @@
 #include "client.h"
 using namespace std;
 
-void viewUser(user**, int, int);
+void viewUser(user**, int, int);//shows the attributes of a user
 int startMenu();
 bool loginMenu(user**, int&, int);
 int findUser(user**, int, string);//finds the index of the username and returns it
@@ -21,7 +21,7 @@ void tellerTransaction(user**, int, client*, int);//clients / client size /
 void printToFile(admin*, int, int);//admin just to test, maybe use user** with a polymorphic approach
 int readFromFile(admin*, int);//same as ^^
 char encrypt(char);//simple Xor encryption, can change later
-
+void editBanker(user**, int, int);
 
 int main()
 {
@@ -79,7 +79,7 @@ int main()
 								telCount = addTeller(tellers, telMax, telCount, users, usrMax, userCount);
 								break;
 							case 2:
-								//edit banker (teller)
+								editBanker(users, currentUserIndex, userCount);
 								break;
 							case 3:
 								viewUser(users, currentUserIndex, userCount);
@@ -116,6 +116,53 @@ int main()
 	return 0;
 }
 
+void editBanker(user** userPTR, int userIndex, int pop)
+{
+	int choice, targetIndex;
+	string bankerID, f, l, edit;
+	
+	//Finds index of target UserID, checks for validity 
+	cout << "Enter Banker UserID: ";
+	cin >> bankerID;
+	targetIndex = findUser(userPTR, pop, bankerID);
+	if (targetIndex == -1)
+	{
+		cout <<"Invalid UserID";
+		return;
+	}
+	
+	//Iterating userPTR to target account
+	for (int i = 0; i < targetIndex; i++)
+		userPTR++;
+	
+	cout << "What would you like to edit: \n"
+		 << "1. Name\n"
+		 << "2. UserID\n"
+		 << "3. Password\n"
+		 << "Enter Number: ";
+	cin >> choice;
+	switch(choice)
+	{
+		case 1: //Change Name
+			cout << "Enter Full Name: ";
+			cin >> f>>l;
+			((*userPTR)->setName(f, l));
+			break;
+		case 2: //Change userId
+			cout << "Enter UserID: ";
+			cin >> edit;
+			((*userPTR)->setUserID(edit));
+			break;
+		case 3: //Change Password
+			cout <<"Enter Password: ";
+			cin >> edit;
+			((*userPTR)->setPassword(edit));
+			break;
+		default:
+			cout << "Invalid Choice.\n";
+	}
+}
+
 void viewUser(user** userPTR, int userIndex, int pop)
 {
 	string name;
@@ -137,6 +184,7 @@ void viewUser(user** userPTR, int userIndex, int pop)
 	else
 		cout << "Error: ID not found\n" << endl;
 }
+
 int startMenu()
 {
 	int choice;
