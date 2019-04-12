@@ -24,7 +24,7 @@ class user
 		virtual string formatSave() = 0;
 		virtual int menu() = 0;
 		virtual void print() = 0;
-		void logTransaction(int, double, double, string);//account number / old balance / new balance / account holder name
+		void logTransaction(int, double, double, string, bool);//account number / old balance / new balance / account holder name / type of transaction 0 = w 1 = d
 	protected:
 		string first;
 		string last;
