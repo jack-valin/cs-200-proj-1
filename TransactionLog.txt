@@ -1,0 +1,3 @@
+User c209335 made a transaction of $300 on account number 114 belonging to Ichabod Fletchman: new balance $800
+User c209335 made a transaction of $100 on account number 114 belonging to Ichabod Fletchman: new balance $700
+User t196753 made a transaction of $300 on account number 114 belonging to Ichabod Fletchman: new balance $1000

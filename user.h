@@ -1,6 +1,7 @@
 //user.h
 #include <iostream>
 #include <sstream>
+#include <fstream>
 using namespace std;
 #ifndef USER_H
 #define USER_H
@@ -23,6 +24,7 @@ class user
 		virtual string formatSave() = 0;
 		virtual int menu() = 0;
 		virtual void print() = 0;
+		void logTransaction(int, double, double, string);//account number / old balance / new balance / account holder name
 	protected:
 		string first;
 		string last;

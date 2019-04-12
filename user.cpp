@@ -1,5 +1,4 @@
 // User.cpp
-#include <sstream>
 #include <iostream>
 using namespace std;
 #include "user.h"
@@ -36,3 +35,25 @@ string user::getName(){ return first + " " + last; }
 string user::getPassword(){ return password; }
 string user::getUserID(){ return userID; }
 int user::getNumID(int num){ return numID; }
+void user::logTransaction(int accNum, double original, double newBal, string name)
+{
+	stringstream line;
+	string finalLine;
+	ofstream transactionLog;
+	int num = 0;
+
+	transactionLog.open("TransactionLog.txt", ios::app);//userID __ made a transaction of $__ on account number __ belonging to __ new balance $__
+
+	line.str("");
+	finalLine = "";
+	line << "User " << getUserID() << " made a transaction of $" << (newBal - original) << " on account number " << accNum << " belonging to " << name 
+		 << ": new balance $" << newBal << endl;
+	finalLine = line.str();//turns the stringstream into a string, saves it to finalLine
+	transactionLog << finalLine;
+	transactionLog.close();
+	
+	cout << "The transaction has been logged\n";
+	cout << "The file can be found in: ";
+	system("CD");
+	cout << endl;
+}

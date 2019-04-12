@@ -18,8 +18,8 @@ class account
 		void setAccountID(int);
 		
 		void print();
-		void deposit(double);
-		void withdrawal(double);
+		bool deposit(double);
+		bool withdrawal(double);
 		
 	private:
 		double balance;

@@ -17,7 +17,7 @@ bool checkPassword(user**, string, int);
 int addTeller(teller*, int, int, user**, int, int&);//teller pointer, teller max size, teller current size, user pointer, user max size, user current size
 int addAdmin(admin*, int, int, user**, int, int&);//same as the teller
 int addClient(client*, int, int, user**, int, int&);//same as the other two
-void tellerTransaction(client*, int);//clients / client size /
+void tellerTransaction(user**, int, client*, int);//clients / client size /
 void printToFile(admin*, int, int);//admin just to test, maybe use user** with a polymorphic approach
 int readFromFile(admin*, int);//same as ^^
 char encrypt(char);//simple Xor encryption, can change later
@@ -91,7 +91,7 @@ int main()
 								//edit client
 								break;
 							case 6:
-								tellerTransaction(clients, clCount);
+								tellerTransaction(users, currentUserIndex, clients, clCount);
 								break;
 							default:
 								cout << "\nError: Invalid option\n";
@@ -379,12 +379,13 @@ int addClient(client* cPTR, int clMax, int clSize, user** uPTR, int userMax, int
 	}
 	return clSize;
 }
-void tellerTransaction(client* cls, int clCount)
+void tellerTransaction(user** uPTR, int currentUserIndex, client* cls, int clCount)
 {
 	int targetID;
 	char type;
 	bool done = false;
 	bool found = false;
+	bool success = false;
 	double amount;
 	
 	if (clCount == 0)
@@ -409,13 +410,17 @@ void tellerTransaction(client* cls, int clCount)
 							case 'd':
 								cout << "Enter the amount to deposit: ";
 								cin >> amount;
-								cls[i].accounts[j].deposit(amount);
+								success = cls[i].accounts[j].deposit(amount);
+								if (success == true)
+									(*uPTR[currentUserIndex]).logTransaction(cls[i].accounts[j].getAccountID(), (cls[i].accounts[j].getBalance() - amount), cls[i].accounts[j].getBalance(), cls[i].getName());
 								done = true;
 								break;
 							case 'w':
 								cout << "Enter the amount to withdrawal: ";
 								cin >> amount;
-								cls[i].accounts[j].withdrawal(amount);
+								success = cls[i].accounts[j].withdrawal(amount);
+								if (success == true)
+									(*uPTR[currentUserIndex]).logTransaction(cls[i].accounts[j].getAccountID(), (cls[i].accounts[j].getBalance() - amount), cls[i].accounts[j].getBalance(), cls[i].getName());
 								done = true;
 								break;
 							default:

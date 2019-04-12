@@ -62,4 +62,6 @@ Jack:
 	Corrected some minor typo found in BankApp.cpp (357)
 
 Thomas:
+	added a transaction log capability to log all transactions made on accounts
+	added the option for a teller to make transactions on accounts
 Sam:
