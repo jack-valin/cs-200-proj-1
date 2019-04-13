@@ -18,6 +18,8 @@ class user
 		void setUserID(string, string);
 //accessors
 		string getName();
+		string getFirstName();
+		string getLastName();
 		string getPassword(); // I assume this will just return a hash of the password rather than the cleartext? Once we get to that point, of course. - Jack
 		string getUserID();
 		int getNumID(int);//takes the previous ID issued and increments it

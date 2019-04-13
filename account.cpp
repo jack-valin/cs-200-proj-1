@@ -50,7 +50,7 @@ string account::formatSave(){
 
 	line.str("");
 	finalLine = "";
-	line << accountID << " " << type << " " << balance;
+	line << accountID << "-" << type << "-" << balance;
 	finalLine = line.str();//turns the stringstream into a string, saves it to finalLine
 
 	return finalLine;

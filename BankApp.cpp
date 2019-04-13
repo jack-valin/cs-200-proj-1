@@ -545,8 +545,12 @@ int readFromFile(user** uPTR, int userMax, int userSize, admin* aPTR, int admMax
 	ifstream userDataIn("UserData.txt");
 	// char choice;  // do we need this?
 	char ch;
+	int chCount = 0;
+	int position = 0;
+	int previous = 0;
 	bool exist = false;
 	stringstream line;
+	string finalLine;
 	char userType;
 
 	string dataElements[18];
@@ -556,14 +560,39 @@ int readFromFile(user** uPTR, int userMax, int userSize, admin* aPTR, int admMax
 	{
 		// Doesn't this data need to get decrypted char by char? Or can it handle it all at once?
 		userDataIn >> ch;
+		chCount++;
 		//ch = encrypt(ch);
 		while(!userDataIn.eof())//while it is not at the end of file
 		{
 			line << ch;
 			if(ch == ':')
 			{
+				cout << "chCount: " << chCount << endl;
+				for (int i = 0; i < chCount; i++)
+				{
+					finalLine = line.str();
+					//cout << "finalLine: " << finalLine << endl;
+					if (finalLine[i] == '-')
+					{
+						dataElements[position] = finalLine.substr(previous, i - previous);
+						previous = i + 1;
+						position++;
+					}
+					if (finalLine[i] == ':')
+					{
+						dataElements[position] = finalLine.substr(previous, i - previous);
+						previous = i + 1;
+						position++;
+					}
+				}
+				position = 0;
+				previous = 0;
+				for (int i = 0; i < position; i++)
+				{
+					cout << "data: " << dataElements[i] << endl;
+				}
 				// The maximum possible number of elements in a line is 18 - a client with 4 accounts
-				line >> dataElements[0]  // userID
+				/*line >> dataElements[0]  // userID
 						 >> dataElements[1]  // password
 						 >> dataElements[2]  // first name
 						 >> dataElements[3]  // last name
@@ -580,7 +609,7 @@ int readFromFile(user** uPTR, int userMax, int userSize, admin* aPTR, int admMax
 						 >> dataElements[14]
 						 >> dataElements[15] // account id
 						 >> dataElements[16]
-						 >> dataElements[17];
+						 >> dataElements[17];*/
 				userType = 	dataElements[0][0]; // the first letter of the userID should be the type of user		dataElements[0].substr(0,1)
 				switch (userType){
 					case 'a': // load the administrator user
@@ -673,8 +702,10 @@ int readFromFile(user** uPTR, int userMax, int userSize, admin* aPTR, int admMax
 					default: cout << "ERROR: User type " << userType << " not recognized from UserData.txt file." << endl;
 				}
 				line.str("");
+				chCount = 0;
 			}
 			userDataIn >> ch;
+			chCount++;
 			//ch = encrypt(ch);
 		}
 		userDataIn.close();

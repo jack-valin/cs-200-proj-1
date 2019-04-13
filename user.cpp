@@ -40,6 +40,9 @@ string user::getName(){ return first + " " + last; }
 string user::getPassword(){ return password; }
 string user::getUserID(){ return userID; }
 int user::getNumID(int num){ return numID; }
+string user::getFirstName() { return first; }
+string user::getLastName() { return last; }
+
 void user::logTransaction(int accNum, double original, double newBal, string name, bool type)
 {
 	stringstream line;

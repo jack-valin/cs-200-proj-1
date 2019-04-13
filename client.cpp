@@ -83,13 +83,14 @@ string client::formatSave()
 
 	line.str("");
 	finalLine = "";
-	line << getUserID() << " "
-			 << getPassword() << " "
-			 << getName() << " "
-			 << getBirthDate() << " "
+	line << getUserID() << "-"
+			 << getPassword() << "-"
+			 << getFirstName() << "-"
+			 << getLastName() << "-"
+			 << getBirthDate() << "-"
 			 << accountCount;
 	for (int i = 0; i < accountCount; i++){
-		line << " " << accounts[i].formatSave();
+		line << "-" << accounts[i].formatSave();
 	}
 	line << ":" << endl;
 	finalLine= line.str();//turns the stringstream into a string, saves it to finalLine
