@@ -22,6 +22,7 @@ void printToFile(user**, int);//admin just to test, maybe use user** with a poly
 int readFromFile(user**, int, int, admin*, int, int&, teller*, int, int&, client*, int, int&);
 char encrypt(char);//simple Xor encryption, can change later
 void editBanker(user**, int, int);
+void editClient(user**, int, int, client*, int);
 bool checkForUserDataFile(); //see if UserData.txt already exists
 
 int main()
@@ -98,7 +99,7 @@ int main()
 								clCount = addClient(clients, clMax, clCount, users, usrMax, userCount);
 								break;
 							case 5:
-								//edit client
+								editClient(users, currentUserIndex, userCount, clients, clCount);
 								break;
 							case 6:
 								tellerTransaction(users, currentUserIndex, clients, clCount);
@@ -140,11 +141,11 @@ void editBanker(user** userPTR, int userIndex, int pop)
 		cout <<"Invalid UserID";
 		return;
 	}
-	
+
 	//Iterating userPTR to target account
 	for (int i = 0; i < targetIndex; i++)
 		userPTR++;
-	
+	(*userPTR)->print();	
 	cout << "What would you like to edit: \n"
 		 << "1. Name\n"
 		 << "2. UserID\n"
@@ -171,30 +172,40 @@ void editBanker(user** userPTR, int userIndex, int pop)
 		default:
 			cout << "Invalid Choice.\n";
 	}
+	cout << "Data changed\n" << endl;
 }
-/*void editBanker(user** userPTR, int userIndex, int pop)
+void editClient(user** userPTR, int userIndex, int pop, client* clsPTR, int clCount)
 {
-	int choice, targetIndex;
-	string bankerID, f, l, edit;
+	int choice, targetIndex, clientIndex, accID, numEdit;
+	string clientID, f, l, edit;
 	
 	//Finds index of target UserID, checks for validity 
-	cout << "Enter Banker UserID: ";
-	cin >> bankerID;
-	targetIndex = findUser(userPTR, pop, bankerID);
+	cout << "Enter Client UserID: ";
+	cin >> clientID;
+	targetIndex = findUser(userPTR, pop, clientID);
 	if (targetIndex == -1)
 	{
 		cout <<"Invalid UserID";
 		return;
 	}
-	
+
 	//Iterating userPTR to target account
 	for (int i = 0; i < targetIndex; i++)
 		userPTR++;
-	
+	for (int i = 0; i < clCount; i++)
+	{
+		if (clsPTR[i].getUserID() == clientID)
+			clientIndex = i;
+	}
+	for (int i = 0; i < clientIndex; i++)
+		clsPTR++;
+	(*userPTR)->print();	
 	cout << "What would you like to edit: \n"
 		 << "1. Name\n"
 		 << "2. UserID\n"
 		 << "3. Password\n"
+		 << "4. Birthdate\n"
+		 << "5. Active Account\n"
 		 << "Enter Number: ";
 	cin >> choice;
 	switch(choice)
@@ -214,10 +225,49 @@ void editBanker(user** userPTR, int userIndex, int pop)
 			cin >> edit;
 			((*userPTR)->setPassword(edit));
 			break;
+		case 4: //chage birthday
+			cout << "Enter birthday: ";
+			cin >> edit;
+			clsPTR->setBirthDate(edit);
+			userPTR[targetIndex] = clsPTR;
+			break;
+		case 5://change current account
+			cout << "Enter account ID to change: ";
+			cin >> accID;
+			for (int i = 0; i < clsPTR->accountCount; i++)
+			{
+				if (clsPTR->accounts[i].getAccountID() == accID)
+				{
+					cout << "What would you like to edit: \n"
+		 				 << "1. Account ID\n"
+		 				 << "2. Account Type\n"
+		 				 << "Enter Number: ";
+		 			cin >> choice;
+		 			switch (choice)
+		 			{
+		 				case 1:
+		 					cout << "Enter new account ID: ";
+		 					cin >> numEdit;
+		 					clsPTR->accounts[i].setAccountID(numEdit);
+		 					userPTR[targetIndex] = clsPTR;
+		 					break;
+		 				case 2:
+		 					cout << "Enter new account type: ";
+		 					cin >> edit;
+		 					clsPTR->accounts[i].setType(edit);
+		 					userPTR[targetIndex] = clsPTR;
+		 					break;
+		 				default:
+						 	cout << "Invalid Choice.\n";
+					}
+				}
+			}
+			break;
 		default:
 			cout << "Invalid Choice.\n";
 	}
-}*/
+	cout << "Data changed\n" << endl;
+}
 
 void viewUser(user** userPTR, int userIndex, int pop)
 {
