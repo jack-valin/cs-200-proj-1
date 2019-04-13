@@ -1,5 +1,6 @@
 //account.cpp
 #include "account.h"
+#include <sstream>
 
 account::account()
 {
@@ -41,4 +42,16 @@ bool account::withdrawal(double amount){
 		balance-=amount;
 		cout << "Withdrawal successful\n";
 		return true;
+}
+
+string account::formatSave(){
+	stringstream line;
+	string finalLine;
+
+	line.str("");
+	finalLine = "";
+	line << accountID << " " << type << " " << balance;
+	finalLine = line.str();//turns the stringstream into a string, saves it to finalLine
+
+	return finalLine;
 }

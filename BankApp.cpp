@@ -22,6 +22,7 @@ void printToFile(admin*, int, int);//admin just to test, maybe use user** with a
 int readFromFile(admin*, int);//same as ^^
 char encrypt(char);//simple Xor encryption, can change later
 void editBanker(user**, int, int);
+bool checkForUserDataFile(); //see if UserData.txt already exists
 
 int main()
 {
@@ -483,79 +484,213 @@ void tellerTransaction(user** uPTR, int currentUserIndex, client* cls, int clCou
 	}
 }
 //may need to have different printToFile functions for each class type?? Polymorphic approach with User**?
-void printToFile(admin* adm, int pop, int read)//population, read offsets the count so there are not old clients rewritten to the file
+// Prototype adjustment for the polymorphic approach. REQUIRES TESTING
+void printToFile(user** usr, int pop, int read)//population, read offsets the count so there are not old clients rewritten to the file
 {														//may not need the read variable if we are rewriting the entire file
 	stringstream line;
 	string finalLine;
-	ofstream adminData;
+	ofstream userData;
 	int num = 0;
 
-	adminData.open("AdminData.txt");//was "AdminData.txt", ios::app
+	userData.open("UserData.txt");//was "AdminData.txt", ios::app
 
 	for(int i = 0; i < read; i++)
-		adm++;
+		usr++;
 
 	for (int i = read; i < pop; i++)
 	{
 		line.str("");
 		finalLine = "";
-		line << adm->getUserID() << " " << adm->getPassword() << " " << adm->getName() << " " << adm->getAdminR() << endl; //fix with the get functions from admin
+		line << usr->formatSave() << endl; //fix with the get functions from admin
 		finalLine= line.str();//turns the stringstream into a string, saves it to finalLine
 		for(int e = 0; e < finalLine.length(); e++)
 		{
 			finalLine[e] = encrypt(finalLine[e]);
 		}
-		adminData << finalLine;
+		userData << finalLine;
 		num++;//a count of the number saved to the file
-		adm++;
+		usr++;
 	}
-	adminData.close();
+	userData.close();
 	cout << "\n" << num << " new admin(s) have been saved to the file AdminData.txt\n";
 	cout << "The file can be found in: ";
 	system("CD");
 	cout << "It is the same directory that this program is stored in" << endl;
 	cout << endl;
 }
-int readFromFile(admin* adm, int pop)//pop = population (amount of admins in the array)
+// Arguments to this function have to basically contain everything. It's a mess without vectors
+// Here's the list:
+// uPTR = pointer to user array
+// usrMax = maximum number of users
+// usrSize = current number of users
+// aPTR = pointer to admin array
+// admMax = maximum number of admins
+// admSize = current number of admins
+// tPTR = pointer to teller array
+// telMax = maximum number of tellers
+// telSize = current number of tellers
+// cPTR = pointer to client array
+// cliMax = maximum number of clients
+// cliSize = current number of clients
+int readFromFile(user** uPTR, int userMax, int userSize, admin* aPTR, int admMax, int &admSize, teller* tPTR, int telMax, int &telSize, client* cPTR, int cliMax, int &cliSize)
 {
-	ifstream adminDataIn("AdminData.txt");
-	char choice;
+	ifstream userDataIn("UserData.txt");
+	// char choice;  // do we need this?
 	char ch;
 	bool exist = false;
 	stringstream line;
+	string userType;
 
-	string last, first, password, userID, rank;
-	exist = adminDataIn.good();//test to see if the file exists
+	string dataElements[18];
+	// exist = userDataIn.good();//test to see if the file exists
 
-	if(exist == true)
+	if(checkForUserDataFile())
 	{
-		adminDataIn >> ch;
+		// Doesn't this data need to get decrypted char by char? Or can it handle it all at once?
+		userDataIn >> ch;
 		ch = encrypt(ch);
-		while(!adminDataIn.eof())//while it is not at the end of file
+		while(!userDataIn.eof())//while it is not at the end of file
 		{
 			line << ch;
 			if(ch == '\n')
 			{
-				line >> userID >> password >> first >> last >> rank;//need to change for our variables
-				adm->setUserID(userID);
-				adm->setPassword(password);
-				adm->setName(first, last);
-				adm->setAdminR(rank);
-				adm++;
-				pop++;
+				// The maximum possible number of elements in a line is 18 - a client with 4 accounts
+				line >> dataElements[0]  // userID
+						 >> dataElements[1]  // password
+						 >> dataElements[2]  // first name
+						 >> dataElements[3]  // last name
+						 >> dataElements[4]  // rank / birthDate
+						 >> dataElements[5]  // accountCount
+						 >> dataElements[6]  // account id
+						 >> dataElements[7]  // account type
+						 >> dataElements[8]  // account balance
+						 >> dataElements[9]  // account id
+						 >> dataElements[10]
+						 >> dataElements[11]
+						 >> dataElements[12] // account id
+						 >> dataElements[13]
+						 >> dataElements[14]
+						 >> dataElements[15] // account id
+						 >> dataElements[16]
+						 >> dataElements[17];
+				userType = dataElements[0].substr(0,1); // the first letter of the userID should be the type of user
+				switch (userType){
+					case "a": // load the administrator user
+
+						// check if we have too many admins or users first
+						if ( admSize >= admMax ){
+							cout << "ERROR: Attempted to load too many administrators!" << endl;
+							break;
+						}
+						else if ( userSize >= userMax ){
+							cout << "ERROR: Attempted to load too many users! (in admin case)" << endl;
+							break;
+						}
+
+						// administrator saved text output should look like the following:
+						// a12345 password Billy Bob rank
+						//    0      1      2     3   4
+						aPTR->setUserID(dataElements[0].substr(1), "a"); // passing the remainder of the existing userID with the substr() function of string, starting at index 1
+						aPTR->setPassword(dataElements[1]);
+						aPTR->setName(dataElements[2], dataElements[3]);
+						aPTR->setAdminR(dataElements[4]);
+						admSize++;
+						uPTR[userSize] = aPTR;
+						userSize++;
+						aPTR++;
+						break;
+
+					case "c": // load the client user
+
+						// check if we have too many clients or users first
+						if ( cliSize >= cliMax ){
+							cout << "ERROR: Attempted to load too many clients!" << endl;
+							break;
+						}
+						else if ( userSize >= userMax ){
+							cout << "ERROR: Attempted to load too many users! (in client case)" << endl;
+							break;
+						}
+
+						// client saved text output should look like the following:
+						// c12345 password Billy Bob birthDate accountCount  accountinfo...
+						//    0      1      2     3      4         5             6...
+						cPTR->setUserID(dataElements[0].substr(1), "c");
+						cPTR->setPassword(dataElements[1]);
+						cPTR->setName(dataElements[2], dataElements[3]);
+						cPTR->setBirthDate(dataElements[4]);
+						cliSize++;
+
+						// Add in each account via this loop
+						// stoi should convert string to int, per: https://stackoverflow.com/questions/7663709/how-can-i-convert-a-stdstring-to-int
+						for (int i = 0; i < stoi(dataElements[5]); i++){
+							// for the account IDs: ( i * 3 ) + 6
+							// stoi(dataElements[(i * 3) + 6])
+							// for the account types: ( i * 3 ) + 7
+							// dataElements[(i * 3) + 7]
+							// for the balances: ( i * 3 ) + 8
+							// stod(dataElements[(i * 3) + 8])
+							// and for the other conversion I'm using, reference: https://stackoverflow.com/questions/4754011/c-string-to-double-conversion
+							cPTR -> loadAccount(stoi(dataElements[(i * 3) + 6]), dataElements[(i * 3) + 7], stod(dataElements[(i * 3) + 8]));
+						}
+
+						uPTR[userSize] = cPTR;
+						userSize++;
+						cPTR++;
+						break;
+
+					case "t": // load the teller user
+
+						// check if we have too many tellers or users first
+						if ( telSize >= telMax ){
+							cout << "ERROR: Attempted to load too many tellers!" << endl;
+							break;
+						}
+						else if ( userSize >= userMax ){
+							cout << "ERROR: Attempted to load too many users! (in teller case)" << endl;
+							break;
+						}
+
+						// teller saved text output should look like the following:
+						// t12345 password Billy Bob
+						//    0      1      2     3
+						tPTR->setUserID(dataElements[0].substr(1), "t"); // passing the remainder of the existing userID with the substr() function of string, starting at index 1
+						tPTR->setPassword(dataElements[1]);
+						tPTR->setName(dataElements[2], dataElements[3]);
+						telSize++;
+						uPTR[userSize] = tPTR;
+						userSize++;
+						tPTR++;
+						break;
+					default: cout << "ERROR: User type " << userType << " not recognized from UserData.txt file." << endl;
+				}
 				line.str("");
 			}
-			adminDataIn >> ch;
+			userDataIn >> ch;
 			ch = encrypt(ch);
 		}
-		adminDataIn.close();
+		userDataIn.close();
+	}
+	else {
+		cout << "ERROR: UserData.txt does not exist!" << endl;
 	}
 	system("PAUSE");
-	return pop;
+	return userSize;
 }
 char encrypt(char ch)
 {
 	char enc = 'q';
 
 	return (ch ^ enc);
+}
+
+// Since we're gonna want to check for this file's existance in main() as well as readFromFile(), I made it a function
+bool checkForUserDataFile(){
+	ifstream userDataIn("UserData.txt");
+	if (userDataIn.good()){
+		return true;
+	}
+	else {
+		return false;
+	}
 }

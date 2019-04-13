@@ -8,26 +8,28 @@ class account
 {
 	public:
 		account();
-		
+
 		double getBalance();
 		string getType();
 		int getAccountID();
-		
+
 		void setBalance(double);
 		void setType(string);
 		void setAccountID(int);
-		
+
 		void print();
 		bool deposit(double);
 		bool withdrawal(double);
 		
+		string formatSave();
+
 	private:
 		double balance;
 		string type;
 		int accountID;
-		
+
 	protected:
-	
+
 };
 
 #endif
