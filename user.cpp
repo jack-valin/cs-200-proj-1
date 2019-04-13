@@ -29,7 +29,12 @@ void user::setUserID(string complete)
 {
 	userID = complete;
 }
-
+void user::setUserID(string num, string let)
+{
+	stringstream sstm;
+	sstm << let << num;
+	userID = sstm.str();
+}
 //accessors
 string user::getName(){ return first + " " + last; }
 string user::getPassword(){ return password; }
@@ -47,10 +52,10 @@ void user::logTransaction(int accNum, double original, double newBal, string nam
 	line.str("");
 	finalLine = "";
 	if (type == 1)
-		line << "User " << getUserID() << " made a deposit of $" << (newBal - original) << " on account number " << accNum << " belonging to " << name 
+		line << "User " << getUserID() << " made a deposit of $" << (newBal - original) << " on account number " << accNum << " belonging to " << userID 
 			 << ": new balance $" << newBal << endl;
 	else
-		line << "User " << getUserID() << " made a withdrawal of $" << (newBal - original) << " on account number " << accNum << " belonging to " << name 
+		line << "User " << getUserID() << " made a withdrawal of $" << (newBal - original) << " on account number " << accNum << " belonging to " << userID 
 			 << ": new balance $" << newBal << endl;
 	finalLine = line.str();//turns the stringstream into a string, saves it to finalLine
 	transactionLog << finalLine;

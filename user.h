@@ -15,6 +15,7 @@ class user
 		void setPassword(string);
 		void setUserID(int, string);//takes in the numID and letter for class type
 		void setUserID(string);
+		void setUserID(string, string);
 //accessors
 		string getName();
 		string getPassword(); // I assume this will just return a hash of the password rather than the cleartext? Once we get to that point, of course. - Jack

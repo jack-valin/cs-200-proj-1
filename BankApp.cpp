@@ -18,7 +18,7 @@ int addTeller(teller*, int, int, user**, int, int&);//teller pointer, teller max
 int addAdmin(admin*, int, int, user**, int, int&);//same as the teller
 int addClient(client*, int, int, user**, int, int&);//same as the other two
 void tellerTransaction(user**, int, client*, int);//clients / client size /
-void printToFile(admin*, int, int);//admin just to test, maybe use user** with a polymorphic approach
+void printToFile(user**, int);//admin just to test, maybe use user** with a polymorphic approach
 int readFromFile(admin*, int);//same as ^^
 char encrypt(char);//simple Xor encryption, can change later
 void editBanker(user**, int, int);
@@ -74,7 +74,7 @@ int main()
 						switch (choice)
 						{
 							case 0:
-								//save data to files
+								printToFile(users, userCount);
 								break;
 							case 1:
 								telCount = addTeller(tellers, telMax, telCount, users, usrMax, userCount);
@@ -485,7 +485,7 @@ void tellerTransaction(user** uPTR, int currentUserIndex, client* cls, int clCou
 }
 //may need to have different printToFile functions for each class type?? Polymorphic approach with User**?
 // Prototype adjustment for the polymorphic approach. REQUIRES TESTING
-void printToFile(user** usr, int pop, int read)//population, read offsets the count so there are not old clients rewritten to the file
+void printToFile(user** usr, int pop)//population, read offsets the count so there are not old clients rewritten to the file
 {														//may not need the read variable if we are rewriting the entire file
 	stringstream line;
 	string finalLine;
@@ -494,28 +494,27 @@ void printToFile(user** usr, int pop, int read)//population, read offsets the co
 
 	userData.open("UserData.txt");//was "AdminData.txt", ios::app
 
-	for(int i = 0; i < read; i++)
-		usr++;
+	//for(int i = 0; i < read; i++)
+	//	usr++;
 
-	for (int i = read; i < pop; i++)
+	for (int i = 0; i < pop; i++)
 	{
 		line.str("");
 		finalLine = "";
-		line << usr->formatSave() << endl; //fix with the get functions from admin
+		line << (*usr)->formatSave(); //fix with the get functions from admin
 		finalLine= line.str();//turns the stringstream into a string, saves it to finalLine
-		for(int e = 0; e < finalLine.length(); e++)
+		/*for(int e = 0; e < finalLine.length(); e++)
 		{
 			finalLine[e] = encrypt(finalLine[e]);
-		}
+		}*/
 		userData << finalLine;
 		num++;//a count of the number saved to the file
 		usr++;
 	}
 	userData.close();
-	cout << "\n" << num << " new admin(s) have been saved to the file AdminData.txt\n";
+	cout << "\nThe data has been saved\n";
 	cout << "The file can be found in: ";
 	system("CD");
-	cout << "It is the same directory that this program is stored in" << endl;
 	cout << endl;
 }
 // Arguments to this function have to basically contain everything. It's a mess without vectors
@@ -539,7 +538,7 @@ int readFromFile(user** uPTR, int userMax, int userSize, admin* aPTR, int admMax
 	char ch;
 	bool exist = false;
 	stringstream line;
-	string userType;
+	char userType;
 
 	string dataElements[18];
 	// exist = userDataIn.good();//test to see if the file exists
@@ -573,9 +572,9 @@ int readFromFile(user** uPTR, int userMax, int userSize, admin* aPTR, int admMax
 						 >> dataElements[15] // account id
 						 >> dataElements[16]
 						 >> dataElements[17];
-				userType = dataElements[0].substr(0,1); // the first letter of the userID should be the type of user
+				userType = dataElements[0][0]; // the first letter of the userID should be the type of user		dataElements[0].substr(0,1)
 				switch (userType){
-					case "a": // load the administrator user
+					case 'a': // load the administrator user
 
 						// check if we have too many admins or users first
 						if ( admSize >= admMax ){
@@ -600,7 +599,7 @@ int readFromFile(user** uPTR, int userMax, int userSize, admin* aPTR, int admMax
 						aPTR++;
 						break;
 
-					case "c": // load the client user
+					case 'c': // load the client user
 
 						// check if we have too many clients or users first
 						if ( cliSize >= cliMax ){
@@ -639,7 +638,7 @@ int readFromFile(user** uPTR, int userMax, int userSize, admin* aPTR, int admMax
 						cPTR++;
 						break;
 
-					case "t": // load the teller user
+					case 't': // load the teller user
 
 						// check if we have too many tellers or users first
 						if ( telSize >= telMax ){

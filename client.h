@@ -20,6 +20,7 @@ class client: public user
 		// void viewAccounts(); // print accounts associated with this customer, pass the accountCount integer
 		string getBirthDate();
 	// utilities
+		void viewAccounts();
 		string formatAccount(int); //to format the accounts to be called in formatSave(). Pass index of desired account from the accounts[] array
 		string formatString();
 		string formatSave();
@@ -29,7 +30,7 @@ class client: public user
 		void clientWithdrawal();
 		void loadAccount(int, string, double); // for use in the readFromFile() function in BankApp.cpp
 	//	public://changed from protected so they can be used in the main app?
-	protected:
+	//protected:
 		// using some other data type besides string for birthDate will likely be painful but necessary if we want to do anything more complicated than print it
 		// but in case we need them, I found some references we may want later:
 		// http://www.cplusplus.com/forum/beginner/130258/

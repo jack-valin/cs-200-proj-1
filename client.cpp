@@ -228,8 +228,8 @@ void client::clientWithdrawal()
 	}
 }
 
-void loadAccount(int accNum, string t, double bal){
-	if ( accountCount	< 4 ){
+void client::loadAccount(int accNum, string t, double bal){
+	if ( accountCount < 4 ){
 		accounts[accountCount].setAccountID(accNum);
 		accounts[accountCount].setType(t);
 		accounts[accountCount].setBalance(bal);
