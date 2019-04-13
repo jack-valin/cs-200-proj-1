@@ -76,19 +76,6 @@ void client::viewAccounts(){
 		     << "\t\tBalance: $" << accounts[i].getBalance() <<"\n"<<endl;
 	}
 }
-// I just made this a function of the accounts class, namely formatSave(). It was easier
-// string client::formatAccount(int accNum)
-// {
-// 	stringstream line;
-// 	string finalLine;
-//
-// 	line.str("");
-// 	finalLine = "";
-// 	line << accounts[accNum] ->  << endl;
-// 	finalLine= line.str();//turns the stringstream into a string, saves it to finalLine
-//
-// 	return finalLine;
-// }
 string client::formatSave()
 {
 	stringstream line;
@@ -104,7 +91,7 @@ string client::formatSave()
 	for (int i = 0; i < accountCount; i++){
 		line << " " << accounts[i].formatSave();
 	}
-	line << endl;
+	line << ":" << endl;
 	finalLine= line.str();//turns the stringstream into a string, saves it to finalLine
 
 	return finalLine;

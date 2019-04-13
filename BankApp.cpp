@@ -19,7 +19,7 @@ int addAdmin(admin*, int, int, user**, int, int&);//same as the teller
 int addClient(client*, int, int, user**, int, int&);//same as the other two
 void tellerTransaction(user**, int, client*, int);//clients / client size /
 void printToFile(user**, int);//admin just to test, maybe use user** with a polymorphic approach
-int readFromFile(admin*, int);//same as ^^
+int readFromFile(user**, int, int, admin*, int, int&, teller*, int, int&, client*, int, int&);
 char encrypt(char);//simple Xor encryption, can change later
 void editBanker(user**, int, int);
 bool checkForUserDataFile(); //see if UserData.txt already exists
@@ -47,10 +47,19 @@ int main()
 	user* users[usrMax];
 
 	//add an if that tests if there are users in the file, if not, force the creation of an admin when it starts
-
-
-	admCount = addAdmin(admins, admMax, admCount, users, usrMax, userCount);
-
+	userCount = readFromFile(users, usrMax, userCount, admins, admMax, admCount, tellers, telMax, telCount, clients, clMax, clCount);
+	cout << "\t\tcounts \n"
+		 << "Users: " << userCount << "\n"
+		 << "Admins: " << admCount << "\n"
+		 << "Tellers: " << telCount << "\n"
+		 << "Clients: " << clCount << "\n";
+		 
+	if (admCount == 0)
+	{
+		admCount = addAdmin(admins, admMax, admCount, users, usrMax, userCount);
+	}
+	admins[0].print();
+	system("PAUSE");
 	do
 	{
 		system("CLS");
@@ -547,11 +556,11 @@ int readFromFile(user** uPTR, int userMax, int userSize, admin* aPTR, int admMax
 	{
 		// Doesn't this data need to get decrypted char by char? Or can it handle it all at once?
 		userDataIn >> ch;
-		ch = encrypt(ch);
+		//ch = encrypt(ch);
 		while(!userDataIn.eof())//while it is not at the end of file
 		{
 			line << ch;
-			if(ch == '\n')
+			if(ch == ':')
 			{
 				// The maximum possible number of elements in a line is 18 - a client with 4 accounts
 				line >> dataElements[0]  // userID
@@ -572,7 +581,7 @@ int readFromFile(user** uPTR, int userMax, int userSize, admin* aPTR, int admMax
 						 >> dataElements[15] // account id
 						 >> dataElements[16]
 						 >> dataElements[17];
-				userType = dataElements[0][0]; // the first letter of the userID should be the type of user		dataElements[0].substr(0,1)
+				userType = 	dataElements[0][0]; // the first letter of the userID should be the type of user		dataElements[0].substr(0,1)
 				switch (userType){
 					case 'a': // load the administrator user
 
@@ -666,13 +675,17 @@ int readFromFile(user** uPTR, int userMax, int userSize, admin* aPTR, int admMax
 				line.str("");
 			}
 			userDataIn >> ch;
-			ch = encrypt(ch);
+			//ch = encrypt(ch);
 		}
 		userDataIn.close();
 	}
 	else {
 		cout << "ERROR: UserData.txt does not exist!" << endl;
 	}
+	cout << "line: " << line << endl;
+	cout << "ch: " << ch << endl;
+	cout << "userSize: " << userSize << endl;
+	cout << "dataElements[0][0]: " << dataElements[0][0] << endl;
 	system("PAUSE");
 	return userSize;
 }
