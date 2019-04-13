@@ -545,7 +545,9 @@ int readFromFile(user** uPTR, int userMax, int userSize, admin* aPTR, int admMax
 	ifstream userDataIn("UserData.txt");
 	// char choice;  // do we need this?
 	char ch;
-	bool exist = false;
+	char fch;
+	int pos = 0;
+	bool exit = false;
 	stringstream line;
 	char userType;
 
@@ -555,11 +557,36 @@ int readFromFile(user** uPTR, int userMax, int userSize, admin* aPTR, int admMax
 	if(checkForUserDataFile())
 	{
 		// Doesn't this data need to get decrypted char by char? Or can it handle it all at once?
-		userDataIn >> ch;
+		userDataIn >> fch;
+		ch = fch;
 		//ch = encrypt(ch);
 		while(!userDataIn.eof())//while it is not at the end of file
 		{
+			switch (fch)
+			{
+				case 'a':
+					line << ch;
+					if (ch == '/')
+					{
+						line 
+					}
+					if (ch == ':')
+					{
+						userType = fch;
+						cout << "fch: " << fch << endl;
+					}
+					userDataIn >> ch;
+					break;
+				case 't':
+					break;
+				case 'c':
+					break;
+				default:
+					
+			}
+
 			cout << "ch: " << ch << endl;
+			/*cout << "ch: " << ch << endl;
 			line << ch;
 			if(ch == ':')
 			{
@@ -676,7 +703,7 @@ int readFromFile(user** uPTR, int userMax, int userSize, admin* aPTR, int admMax
 				line.str("");
 			}
 			userDataIn >> ch;
-			//ch = encrypt(ch);
+			//ch = encrypt(ch);*/
 		}
 		userDataIn.close();
 	}
