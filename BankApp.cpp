@@ -36,7 +36,7 @@ int main()
 	int admCount = 0;
 	int clCount = 0;
 
-	int admMax = 1;
+	int admMax = 10;
 	int telMax = 10;
 	int clMax = 50;
 	int usrMax = 70;
@@ -559,6 +559,7 @@ int readFromFile(user** uPTR, int userMax, int userSize, admin* aPTR, int admMax
 		//ch = encrypt(ch);
 		while(!userDataIn.eof())//while it is not at the end of file
 		{
+			cout << "ch: " << ch << endl;
 			line << ch;
 			if(ch == ':')
 			{
@@ -682,10 +683,9 @@ int readFromFile(user** uPTR, int userMax, int userSize, admin* aPTR, int admMax
 	else {
 		cout << "ERROR: UserData.txt does not exist!" << endl;
 	}
-	cout << "line: " << line << endl;
 	cout << "ch: " << ch << endl;
 	cout << "userSize: " << userSize << endl;
-	cout << "dataElements[0][0]: " << dataElements[0][0] << endl;
+	cout << "dataElements[0]: " << dataElements[0] << endl;
 	system("PAUSE");
 	return userSize;
 }
