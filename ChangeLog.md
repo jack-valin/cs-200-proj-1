@@ -59,7 +59,11 @@ Sprint 4(Wednesday,Thursday, week 2):
 David:
 Jack:
 	Added this block to the ChangeLog.md to track work done this week
-	Corrected some minor typo found in BankApp.cpp (357)
+	Corrected a minor typo found in BankApp.cpp
+	Added a checkForUserDataFile() function
+	Created formatSave() function for account class
+	Created a loadAccount() function for the client class (specifically to be called by readFromFile)
+	Filled in the readFromFile() function. This is complicated, and will require some serious testing
 
 Thomas:
 Sam:

@@ -38,7 +38,7 @@ void client::activateAccount(){
 			 << "\tBalamce: $" << b << "\n"
 			 << "Do you wish to commit this data (y/n): ";
 		cin >> commit;
-		
+
 		do
 		{
 			if (commit == 'y' || commit == 'Y')
@@ -76,28 +76,37 @@ void client::viewAccounts(){
 		     << "\tBalance: $" << accounts[i].getBalance() <<"\n"<<endl;
 	}
 }
-string client::formatAccount()
-{
-	stringstream line;
-	string finalLine;
-	
-	line.str("");
-	finalLine = "";
-	line << endl;
-	finalLine= line.str();//turns the stringstream into a string, saves it to finalLine
-	
-	return finalLine;
-}
+// I just made this a function of the accounts class, namely formatSave(). It was easier
+// string client::formatAccount(int accNum)
+// {
+// 	stringstream line;
+// 	string finalLine;
+//
+// 	line.str("");
+// 	finalLine = "";
+// 	line << accounts[accNum] ->  << endl;
+// 	finalLine= line.str();//turns the stringstream into a string, saves it to finalLine
+//
+// 	return finalLine;
+// }
 string client::formatSave()
 {
 	stringstream line;
 	string finalLine;
-	
+
 	line.str("");
 	finalLine = "";
-	line << getUserID() << " " << getPassword() << " " << getName() << " " << getBirthDate() << accountCount << endl; //fix with the get functions from admin
+	line << getUserID() << " "
+			 << getPassword() << " "
+			 << getName() << " "
+			 << getBirthDate() << " "
+			 << accountCount;
+	for (int i = 0; i < accountCount; i++){
+		line << " " << accounts[i].formatSave();
+	}
+	line << endl;
 	finalLine= line.str();//turns the stringstream into a string, saves it to finalLine
-	
+
 	return finalLine;
 }
 //utilities
@@ -155,7 +164,7 @@ void client::clientDeposit()
 	int targetIndex;
 	bool found = false;
 	double amount;
-	
+
 	if (accountCount < 1)
 		cout << "Error: No active accounts\n";
 	else
@@ -189,7 +198,7 @@ void client::clientWithdrawal()
 	int targetIndex;
 	bool found = false;
 	double amount;
-	
+
 	if (accountCount < 1)
 		cout << "Error: No active accounts\n";
 	else
@@ -214,5 +223,17 @@ void client::clientWithdrawal()
 		else
 			cout << "Error: account ID not found\n"
 				 << "Quiting to main menu" << endl;
+	}
+}
+
+void loadAccount(int accNum, string t, double bal){
+	if ( accountCount	< 4 ){
+		accounts[accountCount].setAccountID(accNum);
+		accounts[accountCount].setType(t);
+		accounts[accountCount].setBalance(bal);
+		accountCount++;
+	}
+	else {
+		cout << "ERROR: Already loaded maximum number of accounts! (client loadAccount)" << endl;
 	}
 }

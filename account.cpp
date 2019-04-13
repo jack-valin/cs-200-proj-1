@@ -1,5 +1,6 @@
 //account.cpp
 #include "account.h"
+#include <sstream>
 
 account::account()
 {
@@ -20,7 +21,7 @@ void account::print()
 		 <<"\tBalance: $" << getBalance() << endl;
 }
 void account::deposit(double amount)
-{	
+{
 	if (amount < 0)
 	{
 		cout << "Error: Invalid deposit amount" << endl;
@@ -39,4 +40,16 @@ void account::withdrawal(double amount){
 	}
 		balance-=amount;
 		cout << "Withdrawal successful\n";
+}
+
+string account::formatSave(){
+	stringstream line;
+	string finalLine;
+
+	line.str("");
+	finalLine = "";
+	line << accountID << " " << type << " " << balance;
+	finalLine = line.str();//turns the stringstream into a string, saves it to finalLine
+
+	return finalLine;
 }
