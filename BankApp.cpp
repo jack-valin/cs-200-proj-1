@@ -49,18 +49,11 @@ int main()
 
 	//add an if that tests if there are users in the file, if not, force the creation of an admin when it starts
 	userCount = readFromFile(users, usrMax, userCount, admins, admMax, admCount, tellers, telMax, telCount, clients, clMax, clCount);
-	cout << "\t\tcounts \n"
-		 << "Users: " << userCount << "\n"
-		 << "Admins: " << admCount << "\n"
-		 << "Tellers: " << telCount << "\n"
-		 << "Clients: " << clCount << "\n";
 		 
 	if (admCount == 0)
 	{
 		admCount = addAdmin(admins, admMax, admCount, users, usrMax, userCount);
 	}
-	tellers[0].print();
-	system("PAUSE");
 	do
 	{
 		system("CLS");
@@ -663,12 +656,9 @@ int readFromFile(user** uPTR, int userMax, int userSize, admin* aPTR, int admMax
 			line << ch;
 			if(ch == ':')
 			{
-				cout << "chCount: " << chCount << endl;
 				for (int i = 0; i < chCount; i++)
 				{
 					finalLine = line.str();
-					//cout << "finalLine: " << finalLine << endl;
-					cout << "ch: " << finalLine[i] << endl;
 					if (finalLine[i] == '-')
 					{
 						dataElements[position] = finalLine.substr(previous, i - previous);
@@ -684,10 +674,6 @@ int readFromFile(user** uPTR, int userMax, int userSize, admin* aPTR, int admMax
 				}
 				position = 0;
 				previous = 1;
-				for (int i = 0; i < position; i++)
-				{
-					cout << "data: " << dataElements[i] << endl;
-				}
 				// The maximum possible number of elements in a line is 18 - a client with 4 accounts
 				/*line >> dataElements[0]  // userID
 						 >> dataElements[1]  // password
@@ -810,11 +796,6 @@ int readFromFile(user** uPTR, int userMax, int userSize, admin* aPTR, int admMax
 	else {
 		cout << "ERROR: UserData.txt does not exist!" << endl;
 	}
-	cout << "line: " << line << endl;
-	cout << "ch: " << ch << endl;
-	cout << "userSize: " << userSize << endl;
-	cout << "dataElements[0][0]: " << dataElements[0][0] << endl;
-	system("PAUSE");
 	return userSize;
 }
 char encrypt(char ch)
