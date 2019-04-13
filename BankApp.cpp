@@ -58,7 +58,7 @@ int main()
 	{
 		admCount = addAdmin(admins, admMax, admCount, users, usrMax, userCount);
 	}
-	admins[0].print();
+	tellers[0].print();
 	system("PAUSE");
 	do
 	{
@@ -172,6 +172,52 @@ void editBanker(user** userPTR, int userIndex, int pop)
 			cout << "Invalid Choice.\n";
 	}
 }
+/*void editBanker(user** userPTR, int userIndex, int pop)
+{
+	int choice, targetIndex;
+	string bankerID, f, l, edit;
+	
+	//Finds index of target UserID, checks for validity 
+	cout << "Enter Banker UserID: ";
+	cin >> bankerID;
+	targetIndex = findUser(userPTR, pop, bankerID);
+	if (targetIndex == -1)
+	{
+		cout <<"Invalid UserID";
+		return;
+	}
+	
+	//Iterating userPTR to target account
+	for (int i = 0; i < targetIndex; i++)
+		userPTR++;
+	
+	cout << "What would you like to edit: \n"
+		 << "1. Name\n"
+		 << "2. UserID\n"
+		 << "3. Password\n"
+		 << "Enter Number: ";
+	cin >> choice;
+	switch(choice)
+	{
+		case 1: //Change Name
+			cout << "Enter Full Name: ";
+			cin >> f>>l;
+			((*userPTR)->setName(f, l));
+			break;
+		case 2: //Change userId
+			cout << "Enter UserID: ";
+			cin >> edit;
+			((*userPTR)->setUserID(edit));
+			break;
+		case 3: //Change Password
+			cout <<"Enter Password: ";
+			cin >> edit;
+			((*userPTR)->setPassword(edit));
+			break;
+		default:
+			cout << "Invalid Choice.\n";
+	}
+}*/
 
 void viewUser(user** userPTR, int userIndex, int pop)
 {
@@ -512,10 +558,10 @@ void printToFile(user** usr, int pop)//population, read offsets the count so the
 		finalLine = "";
 		line << (*usr)->formatSave(); //fix with the get functions from admin
 		finalLine= line.str();//turns the stringstream into a string, saves it to finalLine
-		/*for(int e = 0; e < finalLine.length(); e++)
+		for(int e = 0; e < finalLine.length(); e++)
 		{
 			finalLine[e] = encrypt(finalLine[e]);
-		}*/
+		}
 		userData << finalLine;
 		num++;//a count of the number saved to the file
 		usr++;
@@ -561,7 +607,7 @@ int readFromFile(user** uPTR, int userMax, int userSize, admin* aPTR, int admMax
 		// Doesn't this data need to get decrypted char by char? Or can it handle it all at once?
 		userDataIn >> ch;
 		chCount++;
-		//ch = encrypt(ch);
+		ch = encrypt(ch);
 		while(!userDataIn.eof())//while it is not at the end of file
 		{
 			line << ch;
@@ -572,6 +618,7 @@ int readFromFile(user** uPTR, int userMax, int userSize, admin* aPTR, int admMax
 				{
 					finalLine = line.str();
 					//cout << "finalLine: " << finalLine << endl;
+					cout << "ch: " << finalLine[i] << endl;
 					if (finalLine[i] == '-')
 					{
 						dataElements[position] = finalLine.substr(previous, i - previous);
@@ -586,7 +633,7 @@ int readFromFile(user** uPTR, int userMax, int userSize, admin* aPTR, int admMax
 					}
 				}
 				position = 0;
-				previous = 0;
+				previous = 1;
 				for (int i = 0; i < position; i++)
 				{
 					cout << "data: " << dataElements[i] << endl;
@@ -706,7 +753,7 @@ int readFromFile(user** uPTR, int userMax, int userSize, admin* aPTR, int admMax
 			}
 			userDataIn >> ch;
 			chCount++;
-			//ch = encrypt(ch);
+			ch = encrypt(ch);
 		}
 		userDataIn.close();
 	}
