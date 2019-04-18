@@ -559,7 +559,7 @@ void tellerTransaction(user** uPTR, int currentUserIndex, client* cls, int clCou
 								cin >> amount;
 								success = cls[i].accounts[j].deposit(amount);
 								if (success == true)
-									(*uPTR[currentUserIndex]).logTransaction(cls[i].accounts[j].getAccountID(), (cls[i].accounts[j].getBalance() - amount), cls[i].accounts[j].getBalance(), cls[i].getName(), true);
+									(*uPTR[currentUserIndex]).logTransaction(cls[i].accounts[j].getAccountID(), (cls[i].accounts[j].getBalance() - amount), cls[i].accounts[j].getBalance(), cls[i].getUserID(), true);
 								done = true;
 								break;
 							case 'w':
@@ -567,7 +567,7 @@ void tellerTransaction(user** uPTR, int currentUserIndex, client* cls, int clCou
 								cin >> amount;
 								success = cls[i].accounts[j].withdrawal(amount);
 								if (success == true)
-									(*uPTR[currentUserIndex]).logTransaction(cls[i].accounts[j].getAccountID(), (cls[i].accounts[j].getBalance() - amount), cls[i].accounts[j].getBalance(), cls[i].getName(), false);
+									(*uPTR[currentUserIndex]).logTransaction(cls[i].accounts[j].getAccountID(), (cls[i].accounts[j].getBalance() - amount), cls[i].accounts[j].getBalance(), cls[i].getUserID(), false);
 								done = true;
 								break;
 							default:

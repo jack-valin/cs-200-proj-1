@@ -173,7 +173,7 @@ void client::clientDeposit()
 			cout << "Enter the amount to deposit: $";
 			cin >> amount;
 			accounts[targetIndex].deposit(amount);
-			logTransaction(accounts[targetIndex].getAccountID(), (accounts[targetIndex].getBalance() - amount), accounts[targetIndex].getBalance(), getName(), true);
+			logTransaction(accounts[targetIndex].getAccountID(), (accounts[targetIndex].getBalance() - amount), accounts[targetIndex].getBalance(), getUserID(), true);
 		}
 		else
 			cout << "Error: account ID not found\n"
@@ -208,7 +208,7 @@ void client::clientWithdrawal()
 			cout << "Enter the amount to withdrawal: $";
 			cin >> amount;
 			accounts[targetIndex].withdrawal(amount);
-			logTransaction(accounts[targetIndex].getAccountID(), (accounts[targetIndex].getBalance() - amount), accounts[targetIndex].getBalance(), getName(), false);
+			logTransaction(accounts[targetIndex].getAccountID(), (accounts[targetIndex].getBalance() - amount), accounts[targetIndex].getBalance(), getUserID(), false);
 		}
 		else
 			cout << "Error: account ID not found\n"

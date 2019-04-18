@@ -55,10 +55,10 @@ void user::logTransaction(int accNum, double original, double newBal, string nam
 	line.str("");
 	finalLine = "";
 	if (type == 1)
-		line << "User " << getUserID() << " made a deposit of $" << (newBal - original) << " on account number " << accNum << " belonging to " << userID 
+		line << "User " << getUserID() << " made a deposit of $" << (newBal - original) << " on account number " << accNum << " belonging to " << name
 			 << ": new balance $" << newBal << endl;
 	else
-		line << "User " << getUserID() << " made a withdrawal of $" << (newBal - original) << " on account number " << accNum << " belonging to " << userID 
+		line << "User " << getUserID() << " made a withdrawal of $" << (newBal - original) << " on account number " << accNum << " belonging to " << name 
 			 << ": new balance $" << newBal << endl;
 	finalLine = line.str();//turns the stringstream into a string, saves it to finalLine
 	transactionLog << finalLine;
