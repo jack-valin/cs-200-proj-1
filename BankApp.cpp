@@ -462,7 +462,7 @@ void tellerTransaction(vector<unique_ptr<user>> *uPTR, unsigned int currentUserI
 								cin >> amount;
 								success = (*cPTR)[i].accounts[j].deposit(amount);
 								if (success == true)
-									(*uPTR)[currentUserIndex] -> logTransaction((*cPTR)[i].accounts[j].getAccountID(), ((*cPTR)[i].accounts[j].getBalance() - amount), (*cPTR)[i].accounts[j].getBalance(), (*cPTR)[i].getName(), true);
+									(*uPTR)[currentUserIndex] -> logTransaction((*cPTR)[i].accounts[j].getAccountID(), ((*cPTR)[i].accounts[j].getBalance() - amount), (*cPTR)[i].accounts[j].getBalance(), (*cPTR)[i].getUserID(), true);
 								done = true;
 								break;
 
@@ -471,7 +471,7 @@ void tellerTransaction(vector<unique_ptr<user>> *uPTR, unsigned int currentUserI
 								cin >> amount;
 								success = (*cPTR)[i].accounts[j].withdrawal(amount);
 								if (success == true)
-									(*uPTR)[currentUserIndex] -> logTransaction(cPTR[i].accounts[j].getAccountID(), (cPTR[i].accounts[j].getBalance() - amount), cPTR[i].accounts[j].getBalance(), cPTR[i].getName(), false);
+									(*uPTR)[currentUserIndex] -> logTransaction(cPTR[i].accounts[j].getAccountID(), (cPTR[i].accounts[j].getBalance() - amount), cPTR[i].accounts[j].getBalance(), cPTR[i].getUserID(), false);
 								done = true;
 								break;
 
