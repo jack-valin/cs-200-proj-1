@@ -9,7 +9,7 @@ admin::admin(){
 	setAdminR("");
 }
 
-admin::admin(string f, string l, string n, string type, string pw, string r){
+admin::admin(string f, string l, int n, string type, string pw, string r){
 	setName(f, l);
 	setPassword(pw);
 	setUserID(n,type);

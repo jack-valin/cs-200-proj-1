@@ -14,17 +14,17 @@ using namespace std;
 void viewUser(vector<unique_ptr<user>>*); //shows the attributes of a user
 int startMenu();
 bool loginMenu(vector<unique_ptr<user>>*, int);
-unsigned int findUser(vector<unique_ptr<user>>*, int, string); //finds the index of the username and returns it
+unsigned int findUser(vector<unique_ptr<user>>*, string); //finds the index of the username and returns it
 bool checkPassword(vector<unique_ptr<user>>*, string, int);
 void addTeller(vector<teller>*, vector<unique_ptr<user>>*); //teller pointer, teller max size, teller current size, user pointer, user max size, user current size
 void addAdmin(vector<admin>*, vector<unique_ptr<user>>*); //same as the teller
 void addClient(vector<client>*, vector<unique_ptr<user>>*); //same as the other two
-void tellerTransaction(vector<unique_ptr<user>>*, int, vector<client>*, int); //clients / client size /
-void printToFile(vector<unique_ptr<user>>*, int); //admin just to test, maybe use user** with a polymorphic approach
+void tellerTransaction(vector<unique_ptr<user>>*, int, vector<client>*); //clients / client size /
+void printToFile(vector<unique_ptr<user>>*); //admin just to test, maybe use user** with a polymorphic approach
 void readFromFile(vector<unique_ptr<user>>*, vector<admin>*, vector<teller>*, vector<client>*);
 char encrypt(char); //simple Xor encryption, can change later
-void editBanker(vector<unique_ptr<user>>*, int);
-void editClient(vector<unique_ptr<user>>*, int);
+void editBanker(vector<teller>*, int);
+void editClient(vector<unique_ptr<user>>*, vector<client>*, int);
 bool checkForUserDataFile(); //see if UserData.txt already exists
 
 int main() {
@@ -50,7 +50,7 @@ int main() {
 		startOption = startMenu();
 		switch (startOption) {
 			case 1:
-				access = loginMenu(users, currentUserIndex, userCount);//hard coded to test functionality
+				access = loginMenu(&users, currentUserIndex);//hard coded to test functionality
 				if (access == true) { //login credentials were correct
 					/*
 					have a switch case for the return values that are returned from the different menus
@@ -63,10 +63,10 @@ int main() {
 								printToFile(&users);
 								break;
 							case 1:
-								telCount = addTeller(&tellers, &users);
+								addTeller(&tellers, &users);
 								break;
 							case 2:
-								editBanker(&users, currentUserIndex);
+								editBanker(&tellers, currentUserIndex);
 								break;
 							case 3:
 								viewUser(&users);
@@ -75,7 +75,7 @@ int main() {
 								addClient(&clients, &users);
 								break;
 							case 5:
-								editClient(&users, currentUserIndex);
+								editClient(&users, &clients, currentUserIndex);
 								break;
 							case 6:
 								tellerTransaction(&users, currentUserIndex, &clients);
@@ -111,7 +111,7 @@ void editBanker(vector<unique_ptr<user>> *userPTR, unsigned int userIndex) {
 	//Finds index of target UserID, checks for validity
 	cout << "Enter Banker UserID: ";
 	cin >> bankerID;
-	targetIndex = findUser(&userPTR, bankerID);
+	targetIndex = findUser(userPTR, bankerID);
 	if (targetIndex == -1) {
 		cout <<"Invalid UserID";
 		return;
@@ -146,21 +146,28 @@ void editBanker(vector<unique_ptr<user>> *userPTR, unsigned int userIndex) {
 	cout << "Data changed\n" << endl;
 }
 
-void editClient(vector<unique_ptr<user>> *userPTR, unsigned	int userIndex) {
+void editClient(vector<unique_ptr<user>> *userPTR, vector<client> *cPTR, unsigned	int userIndex) {
 	int choice, accID, numEdit;
-	unsigned int targetIndex;
+	unsigned int targetIndex, clientIndex;
 	string clientID, f, l, edit;
 
 	//Finds index of target UserID, checks for validity
 	cout << "Enter Client UserID: ";
 	cin >> clientID;
-	targetIndex = findUser(&userPTR, clientID);
+	targetIndex = findUser(userPTR, clientID);
 	if (targetIndex == -1) {
 		cout <<"Invalid UserID";
 		return;
 	}
 
-	(*userPTR)[targetIndex] -> print();
+
+	for (unsigned int i = 0; i < (*cPTR).size(); i++) {
+		if ((*cPTR)[i].getUserID() == clientID)
+			clientIndex = i;
+	}
+
+
+	(*cPTR)[clientIndex].print();
 	cout << "What would you like to edit: \n"
 		 << "1. Name\n"
 		 << "2. UserID\n"
@@ -173,45 +180,45 @@ void editClient(vector<unique_ptr<user>> *userPTR, unsigned	int userIndex) {
 		case 1: //Change Name
 			cout << "Enter Full Name: ";
 			cin >> f>>l;
-			(*userPTR)[targetIndex] -> setName(f, l);
+			(*cPTR)[targetIndex].setName(f, l);
 			break;
 		case 2: //Change userId
 			cout << "Enter UserID: ";
 			cin >> edit;
-			(*userPTR)[targetIndex] -> setUserID(edit);
+			(*cPTR)[targetIndex].setUserID(edit);
 			break;
 		case 3: //Change Password
 			cout <<"Enter Password: ";
 			cin >> edit;
-			(*userPTR)[targetIndex] -> setPassword(edit);
+			(*cPTR)[targetIndex].setPassword(edit);
 			break;
-		case 4: //chage birthday
+		case 4: //change birthday
 			cout << "Enter birthday: ";
 			cin >> edit;
-			(*userPTR)[targetIndex] -> setBirthDate(edit);
+			(*cPTR)[targetIndex].setBirthDate(edit);
 			break;
 		case 5: //change existing account
 			cout << "Enter account ID to change: ";
 			cin >> accID;
-			for ( int i = 0; i < (*userPTR)[targetIndex] -> accountCount; i++ ) {
-				if ((*userPTR)[targetIndex] -> accounts[i].getAccountID() == accID) {
+			for ( int i = 0; i < (*cPTR)[targetIndex].accountCount; i++ ) {
+				if ((*cPTR)[targetIndex].accounts[i].getAccountID() == accID) {
 					cout << "What would you like to edit: \n"
-		 				 << "1. Account ID\n"
-		 				 << "2. Account Type\n"
-		 				 << "Enter Number: ";
-		 			cin >> choice;
-		 			switch (choice) {
-		 				case 1:
-		 					cout << "Enter new account ID: ";
-		 					cin >> numEdit;
-		 					(*userPTR)[targetIndex] -> accounts[i].setAccountID(numEdit);
-		 					break;
-		 				case 2:
-		 					cout << "Enter new account type: ";
-		 					cin >> edit;
-		 					(*userPTR)[targetIndex] -> accounts[i].setType(edit);
-		 					break;
-		 				default:
+						 << "1. Account ID\n"
+						 << "2. Account Type\n"
+						 << "Enter Number: ";
+					cin >> choice;
+					switch (choice) {
+						case 1:
+							cout << "Enter new account ID: ";
+							cin >> numEdit;
+							(*cPTR)[targetIndex].accounts[i].setAccountID(numEdit);
+							break;
+						case 2:
+							cout << "Enter new account type: ";
+							cin >> edit;
+							(*cPTR)[targetIndex].accounts[i].setType(edit);
+							break;
+						default:
 						 	cout << "Invalid Choice.\n";
 					}
 				}
@@ -231,14 +238,14 @@ void viewUser(vector<unique_ptr<user>> *userPTR) {
 	cin >> id;
 	for (unsigned int i = 0; i < (*userPTR).size(); i++)
 	{
-		if ((*userPTR) -> at(i) -> getUserID() == id)
+		if ((*userPTR).at(i) -> getUserID() == id)
 		{
 			found = i;
 			break;
 		}
 	}
 	if (found != 0)
-		(*userPTR) -> at(found) -> print();
+		(*userPTR).at(found) -> print();
 	else
 		cout << "Error: ID not found\n" << endl;
 }
@@ -265,13 +272,13 @@ bool loginMenu(vector<unique_ptr<user>> *userPTR, int &index){
 	cout << "\n\t\t\tLogin\n\n"
 		 << "\tUsername: ";
 	cin >> username;
-	position = findUser(&userPTR, username); // findUser will return -1 if not found
+	position = findUser(userPTR, username); // findUser will return -1 if not found
 
 	if (position != -1)
 	{
 		cout << "\tPassword: ";
 		cin >> password;
-		access = checkPassword(&userPTR, password, position);
+		access = checkPassword(userPTR, password, position);
 		do
 		{
 			if (access == true)
@@ -289,7 +296,7 @@ bool loginMenu(vector<unique_ptr<user>> *userPTR, int &index){
 				cin >> password;
 				count ++;
 			}
-			access = checkPassword(&userPTR, password, position);
+			access = checkPassword(userPTR, password, position);
 		}while(count <= 4);
 		if (access == true)
 		{
@@ -307,14 +314,14 @@ bool loginMenu(vector<unique_ptr<user>> *userPTR, int &index){
 unsigned int findUser(vector<unique_ptr<user>> *userPTR, string name) {
 	for (unsigned int i = 0; i < (*userPTR).size(); i++)
 	{
-		if ((*userPTR) -> at(i) -> getUserID() == name)
+		if ((*userPTR).at(i) -> getUserID() == name)
 			return i;
 	}
 	return -1;
 }
 
 bool checkPassword(vector<unique_ptr<user>> *userPTR, string pass, unsigned int pos) {
-	if ((*userPTR) -> at(pos) -> getPassword() == pass)
+	if ((*userPTR).at(pos) -> getPassword() == pass)
 		return true;
 	return false;
 }
@@ -376,7 +383,7 @@ void addAdmin(vector<admin> *aPTR, vector<unique_ptr<user>> *uPTR) {
 		if (option == 'y') {
 			unique_ptr<admin> tmpAdmin(new admin(first, last, numID, "a", password, rank));
 			aPTR -> push_back(*tmpAdmin);
-			cPTR -> push_back(move(tmpAdmin));
+			uPTR -> push_back(move(tmpAdmin));
 			cout << "Data committed\n" << endl;
 			exit = 0;
 		}
@@ -391,7 +398,7 @@ void addAdmin(vector<admin> *aPTR, vector<unique_ptr<user>> *uPTR) {
 	}while (exit != 0);
 }
 
-void addClient(vector<client>*, vector<unique_ptr<user>>*) {
+void addClient(vector<client> *cPTR, vector<unique_ptr<user>> *pPTR) {
 	string first, last, password, birthday;
 	int numID;
 	char option;//for the commit y/n
@@ -411,9 +418,9 @@ void addClient(vector<client>*, vector<unique_ptr<user>>*) {
 	cin >> option;
 	do {
 		if (option == 'y') {
-			unique_ptr<client> tmpClient(new client(first, last, numID, "c", password, birthday));
+			unique_ptr<client> tmpClient(new client(first, last, numID, "c", password, birthday, 0));
 			cPTR -> push_back(*tmpClient);
-			uPTR -> push_back(move(tmpClient));
+			pPTR -> push_back(move(tmpClient));
 			cout << "Data committed\n" << endl;
 			exit = 0;
 		}
@@ -471,7 +478,7 @@ void tellerTransaction(vector<unique_ptr<user>> *uPTR, unsigned int currentUserI
 								cin >> amount;
 								success = (*cPTR)[i].accounts[j].withdrawal(amount);
 								if (success == true)
-									(*uPTR)[currentUserIndex] -> logTransaction(cPTR[i].accounts[j].getAccountID(), (cPTR[i].accounts[j].getBalance() - amount), cPTR[i].accounts[j].getBalance(), cPTR[i].getUserID(), false);
+									(*uPTR)[currentUserIndex] -> logTransaction((*cPTR)[i].accounts[j].getAccountID(), ((*cPTR)[i].accounts[j].getBalance() - amount), (*cPTR)[i].accounts[j].getBalance(), (*cPTR)[i].getUserID(), false);
 								done = true;
 								break;
 
@@ -592,26 +599,26 @@ void readFromFile(vector<unique_ptr<user>> *uPTR, vector<admin> *aPTR, vector<te
 						 >> dataElements[17];*/
 				userType = 	dataElements[0][0]; // the first letter of the userID should be the type of user		dataElements[0].substr(0,1)
 				switch (userType){
-					case 'a': // load the administrator user
+					case 'a': {// load the administrator user
 
 						// administrator saved text output should look like the following:
 						// a12345 password Billy Bob rank
 						//    0      1      2     3   4
 						// And it must be passed to the overloaded constructor in this order:
 						// 2 3 0sub1 "a" 1 4
-						unique_ptr<admin> tmpAdmin(new admin(dataElements[2], dataElements[3], dataElements[0].substr(1), "a", dataElements[1], dataElements[4]));
+						unique_ptr<admin> tmpAdmin(new admin(dataElements[2], dataElements[3], stoi(dataElements[0].substr(1)), "a", dataElements[1], dataElements[4]));
 						aPTR -> push_back(*tmpAdmin);
-						uPTR -> push_back(move(ptr));
+						uPTR -> push_back(move(tmpAdmin));
 						break;
-
-					case 'c': // load the client user
+					}
+					case 'c': {// load the client user
 
 						// client saved text output should look like the following:
 						// c12345 password Billy Bob birthDate accountCount  accountinfo...
 						//    0      1      2     3      4         5             6...
 						// And it must be passed to the overloaded constructor in this order:
 						// 2 3 0sub1 "c" 1 4 5
-						unique_ptr<client> tmpClient(new client(dataElements[2], dataElements[3], dataElements[0].substr(1), "c", dataElements[4], dataElements[5]))
+						unique_ptr<client> tmpClient(new client(dataElements[2], dataElements[3], stoi(dataElements[0].substr(1)), "c", dataElements[1], dataElements[4], stoi(dataElements[5])));
 						cPTR -> push_back(*tmpClient);
 
 						// Add in each account via this loop
@@ -629,18 +636,19 @@ void readFromFile(vector<unique_ptr<user>> *uPTR, vector<admin> *aPTR, vector<te
 
 						uPTR -> push_back(move(tmpClient));
 						break;
-
-					case 't': // load the teller user
+					}
+					case 't': {// load the teller user
 
 						// teller saved text output should look like the following:
 						// t12345 password Billy Bob
 						//    0      1      2     3
 						// And it must be passed to the overloaded constructor in this order:
 						// 2 3 0sub1 "t" 1
-						unique_ptr<teller> tmpTeller(new teller(dataElements[2], dataElements[3], dataElements[0].substr(1), "t", dataElements[1]));
+						unique_ptr<teller> tmpTeller(new teller(dataElements[2], dataElements[3], stoi(dataElements[0].substr(1)), "t", dataElements[1]));
 						tPTR -> push_back(*tmpTeller);
 						uPTR -> push_back(move(tmpTeller));
 						break;
+					}
 					default: cout << "ERROR: User type " << userType << " not recognized from UserData.txt file." << endl;
 				}
 				line.str("");
@@ -655,7 +663,6 @@ void readFromFile(vector<unique_ptr<user>> *uPTR, vector<admin> *aPTR, vector<te
 	else {
 		cout << "ERROR: UserData.txt does not exist!" << endl;
 	}
-	return userSize;
 }
 char encrypt(char ch)
 {
