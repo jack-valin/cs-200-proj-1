@@ -7,6 +7,14 @@ teller::teller()
 	setPassword("");
 	setUserID(0,"");
 }
+
+// Needed to make this overloaded constructor for working with vectors
+teller::teller(string f, string l, int n, string type, string pw){
+	setName(f, l);
+	setPassword(pw);
+	setUserID(n, type);
+}
+
 string teller::formatSave()
 {
 	stringstream line;

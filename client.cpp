@@ -4,12 +4,19 @@
 
 //constructor
 client::client(){
-	// this is gonna need work
-	// initialize the accounts somehow?
 	setName("","");
 	setPassword("");
 	setUserID(0,"");
+	setBirthDate("");
 	accountCount = 0;
+}
+
+client::client(string f, string l, int n, string type, string pw, string bd, int ac){
+	setName(f, l);
+	setPassword(pw);
+	setUserID(n, type);
+	setBirthDate(bd);
+	accountCount = ac;
 }
 
 //manipulators

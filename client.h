@@ -8,6 +8,7 @@ class client: public user
 	public:
 	//constructors
 		client();
+		client(string, string, int, string, string, string);
 	//mutators
 		// these may take account objects as arguments?
 		void activateAccount();//does not have a parameter because the accountCount can be accessed

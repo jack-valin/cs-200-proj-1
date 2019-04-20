@@ -64,8 +64,19 @@ Jack:
 	Created formatSave() function for account class
 	Created a loadAccount() function for the client class (specifically to be called by readFromFile)
 	Filled in the readFromFile() function. This is complicated, and will require some serious testing
-
 Thomas:
 	added a transaction log capability to log all transactions made on accounts
 	added the option for a teller to make transactions on accounts
+Sam:
+
+Project 2 (Tues, Wed, Thurs, Fri, Sat, week 3):
+David:
+Jack:
+	Work on the implementation of vectors. This turned out to be significantly more work than I initially thought.
+		Implemented overloaded constructors for each child class of user (required for how I learned to add these objects to the vectors)
+		Changed nearly every function in BankApp.cpp to handle the new vectors properly.
+	Readability changes throughout.
+	Variable naming consistency adjustments.
+	Fixed some confused code in the editClient() to make it match the way editBanker() does it
+Thomas:
 Sam:

@@ -8,6 +8,14 @@ admin::admin(){
 	setUserID(0,"");
 	setAdminR("");
 }
+
+admin::admin(string f, string l, string n, string type, string pw, string r){
+	setName(f, l);
+	setPassword(pw);
+	setUserID(n,type);
+	setAdminR(r);
+}
+
 void admin::setAdminR(string r)
 {
 	rank = r;
@@ -22,12 +30,12 @@ string admin::formatSave()
 {
 	stringstream line;
 	string finalLine;
-	
+
 	line.str("");
 	finalLine = "";
 	line << getUserID() << "-" << getPassword() << "-" << getFirstName()  << "-" << getLastName() << "-" << getAdminR() << ":" << endl; //fix with the get functions from admin
 	finalLine= line.str();//turns the stringstream into a string, saves it to finalLine
-	
+
 	return finalLine;
 }
 

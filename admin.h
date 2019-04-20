@@ -5,6 +5,7 @@
 class admin: public user{
 	public:
 		admin();
+		admin(string, string, int, string, string, string);
 		void setAdminR(string);
 		string getAdminR();
 		string formatSave();
@@ -12,8 +13,6 @@ class admin: public user{
 		int menu();
 	private:
 		string rank;
-	
 };
 
 #endif
-
